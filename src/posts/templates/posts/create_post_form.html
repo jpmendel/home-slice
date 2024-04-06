@@ -1,0 +1,38 @@
+<div id="create-post-form" class="post-outer">
+  <div class="post-inner">
+    <h1 class="create-post-header text-body">New Post</h1>
+    <form hx-post="{% url 'posts:posts-api' %}" hx-target="#create-post-form" hx-swap="outerHTML">
+      {% csrf_token %}
+      <div class="create-post-textarea-container">
+        <textarea
+          id="content-textarea"
+          class="create-post-textarea text-body"
+          name="content"
+          type="text"
+          placeholder="Write post here..."
+          rows="10"
+        ></textarea>
+      </div>
+      <div class="post-button-row">
+        <div class="post-left-button-container">
+          <button
+            class="post-button button-primary"
+            type="submit"
+          >
+            Create
+          </button>
+        </div>
+        <div class="post-right-button-container">
+          <button
+            class="post-button button-secondary"
+            type="button"
+            hx-get="{% url 'posts:cancel-create-post-api' %}"
+            hx-target="#create-post-form"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

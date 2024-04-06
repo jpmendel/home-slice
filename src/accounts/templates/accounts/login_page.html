@@ -7,14 +7,14 @@
 {% endblock %}
 
 {% block style %}
-  <link rel="stylesheet" type="text/css" href="{% static 'accounts/login_page.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/accounts/login_page.css' %}">
 {% endblock %}
 
 {% block body %}
   <div class="login-outer">
     <div class="login-inner">
       <h1 class="login-title text-title">Welcome!</h1>
-      <form hx-post="{% url 'accounts:login-api' %}">
+      <form hx-post="{% url 'accounts:login-api' %}" hx-swap="none">
         {% csrf_token %}
         <div>
           <div class="login-label text-caption">

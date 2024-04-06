@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from django.http import (
     HttpRequest,
     HttpResponse,
     HttpResponseBadRequest,
     HttpResponseNotAllowed,
+    QueryDict,
 )
 from .models import Post
 
@@ -16,8 +16,25 @@ def posts_page(request: HttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="accounts:login-page")
-def create_post_page(request: HttpRequest) -> HttpResponse:
-    return render(request, "posts/create_post_page.html")
+def start_post(request: HttpRequest) -> HttpResponse:
+    return render(request, "posts/create_post_form.html")
+
+
+@login_required(login_url="accounts:login-page")
+def cancel_create_post(request: HttpRequest) -> HttpResponse:
+    return render(request, "posts/empty_create_post_form.html")
+
+
+@login_required(login_url="accounts:login-page")
+def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
+    post = Post.objects.get(id=post_id)
+    return render(request, "posts/edit_post_form.html", {"post": post})
+
+
+@login_required(login_url="accounts:login-page")
+def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
+    post = Post.objects.get(id=post_id)
+    return render(request, "posts/post_content.html", {"post": post})
 
 
 @login_required(login_url="accounts:login-page")
@@ -41,7 +58,7 @@ def get_posts(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
         except:
             return HttpResponseBadRequest(f'Post with id "{post_id}" does not exist')
 
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts/posts_list.html", {"posts": posts})
 
 
@@ -51,11 +68,8 @@ def create_post(request: HttpRequest) -> HttpResponse:
         return HttpResponseBadRequest("Post requires content to create")
 
     user = request.user
-    Post.objects.create(user=user, content=content)
-
-    response = HttpResponse()
-    response["HX-Redirect"] = reverse("posts:posts-page")
-    return response
+    post = Post.objects.create(author=user, content=content)
+    return render(request, "posts/new_created_post.html", {"post": post})
 
 
 def update_post(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
@@ -63,11 +77,12 @@ def update_post(request: HttpRequest, post_id: int | None = None) -> HttpRespons
         return HttpResponseBadRequest("Must provide post ID to update")
 
     try:
+        body = QueryDict(request.body)
         post = Post.objects.get(id=post_id)
-        if "content" in request.POST:
-            post.content = request.POST["content"]
+        if "content" in body:
+            post.content = body["content"]
         post.save()
-        return HttpResponse()
+        return render(request, "posts/post_content.html", {"post": post})
     except:
         return HttpResponseBadRequest(f'User with username "{post_id}" not found')
 

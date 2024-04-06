@@ -1,4 +1,4 @@
 {% include 'posts/empty_create_post_form.html' %}
-{% for post in posts %}
+<div class="post-outer">
   {% include 'posts/post_content.html' with post=post %}
-{% endfor %}
+</div>

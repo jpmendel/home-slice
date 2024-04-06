@@ -66,11 +66,7 @@ TEMPLATES = [
 # Static Files (css, js, images, etc)
 
 STATIC_URL = os.path.join(BASE_DIR, "static/")
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static/"),
-    os.path.join(BASE_DIR, "accounts/static/"),
-    os.path.join(BASE_DIR, "posts/static/"),
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/")]
 
 
 # Database

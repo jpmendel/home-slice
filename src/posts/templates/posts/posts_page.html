@@ -7,14 +7,15 @@
 {% endblock %}
 
 {% block style %}
-  <link rel="stylesheet" type="text/css" href="{% static 'nav.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'posts/posts.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/posts/posts_page.css' %}">
 {% endblock %}
 
 {% block body %}
   {% include 'nav_bar.html' %}
   <div class="posts-list-container">
     <div
+      id="posts-list"
       class="posts-list-layout"
       hx-get="{% url 'posts:posts-api' %}"
       hx-trigger="load"
@@ -24,7 +25,9 @@
     <button
       class="post-create-button"
       type="button"
-      onclick="window.location = `{% url 'posts:create-post-page' %}`"
+      hx-get="{% url 'posts:start-create-post-api' %}"
+      hx-target="#create-post-form"
+      hx-swap="outerHTML"
     >
       {% include 'icons/plus.svg' %}
     </button>

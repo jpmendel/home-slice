@@ -1,0 +1,44 @@
+<div id="edit-post-form-{{ post.id }}" class="post-outer">
+  <div class="post-inner">
+    <div class="post-content-header text-body">
+      <b>{{ post.author_name }}</b> {{ post.created_at_string }}
+    </div>
+    <form
+      hx-put="{% url 'posts:posts-api-one' post_id=post.id %}"
+      hx-target="#edit-post-form-{{ post.id }}"
+      hx-swap="outerHTML"
+    >
+      {% csrf_token %}
+      <div class="create-post-textarea-container">
+        <textarea
+          id="content-textarea"
+          class="create-post-textarea text-body"
+          name="content"
+          type="text"
+          placeholder="Write post here..."
+          rows="10"
+        >{{ post.content }}</textarea>
+      </div>
+      <div class="post-button-row">
+        <div class="post-left-button-container">
+          <button
+            class="post-button button-primary"
+            type="submit"
+          >
+            Update
+          </button>
+        </div>
+        <div class="post-right-button-container">
+          <button
+            class="post-button button-secondary"
+            type="button"
+            hx-get="{% url 'posts:cancel-edit-post-api' post_id=post.id %}"
+            hx-target="#edit-post-form-{{ post.id }}"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

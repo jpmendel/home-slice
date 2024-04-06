@@ -19,8 +19,13 @@ class Post(models.Model):
         return self.author.username if self.author is not None else "user"
 
     def created_at_string(self):
-        tz = ZoneInfo("America/New_York")
         # pylint: disable=no-member
-        if self.created_at.date() == datetime.today().date():
-            return f"at {self.created_at.astimezone(tz).strftime("%-I:%M %p")}"
-        return f"on {self.created_at.astimezone(tz).strftime("%m/%d/%y")}"
+        tz = ZoneInfo("America/New_York")
+        zoned_datetime = self.created_at.astimezone(tz)
+        zoned_date = zoned_datetime.date()
+        today = datetime.today().astimezone(tz).date()
+        if zoned_date == today:
+            return f"at {zoned_datetime.strftime("%-I:%M %p")}"
+        if zoned_date.year == today.year:
+            return f"on {zoned_datetime.strftime("%-m/%-d")}"
+        return f"on {zoned_date.strftime("%-m/%-d/%y")}"
