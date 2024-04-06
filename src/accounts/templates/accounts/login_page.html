@@ -1,0 +1,53 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'accounts/login_page.css' %}">
+{% endblock %}
+
+{% block body %}
+  <div class="login-outer">
+    <div class="login-inner">
+      <h1 class="login-title text-title">Welcome!</h1>
+      <form hx-post="{% url 'accounts:login-api' %}">
+        {% csrf_token %}
+        <div>
+          <div class="login-label text-caption">
+            <label for="username-input">Username</label>
+          </div>
+          <div class="login-input-container">
+            <input
+              id="username-input"
+              class="login-input text-body"
+              name="username"
+              type="text"
+              placeholder="Username"
+            >
+          </div>
+        </div>
+        <div>
+          <div class="login-label text-caption">
+            <label for="password-input">Password</label>
+          </div>
+          <div class="login-input-container">
+            <input
+              id="password-input"
+              class="login-input text-body"
+              name="password"
+              type="password"
+              placeholder="Password"
+            >
+          </div>
+        </div>
+        <div class="login-button-container">
+          <button class="login-button button-primary" type="submit">Log In</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

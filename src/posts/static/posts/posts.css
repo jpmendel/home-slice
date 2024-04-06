@@ -1,0 +1,33 @@
+.posts-list-container {
+  margin: 12px;
+}
+
+.posts-list-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 599px) {
+  .post-outer {
+    width: 100%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .post-outer {
+    width: calc(50% - 6px);
+  }
+}
+
+@media (min-width: 900px) {
+  .post-outer {
+    width: calc(33% - 6px);
+  }
+}
+
+.post-inner {
+  padding: 12px;
+  background-color: lightgray;
+  border-radius: 8px;
+}

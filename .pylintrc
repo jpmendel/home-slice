@@ -1,0 +1,3 @@
+[MESSAGES CONTROL]
+
+disable=bare-except,broad-exception-caught,too-few-public-methods,imported-auth-user,missing-function-docstring,missing-class-docstring,missing-module-docstring

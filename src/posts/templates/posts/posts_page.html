@@ -1,0 +1,23 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+
+{% block title %}
+  Posts
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'nav.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'posts/posts.css' %}">
+{% endblock %}
+
+{% block body %}
+  {% include 'nav_bar.html' %}
+  <div class="posts-list-container">
+    <div
+      class="posts-list-layout"
+      hx-get="{% url 'posts:posts-api' %}"
+      hx-trigger="load"
+    ></div>
+  </div>
+{% endblock %}

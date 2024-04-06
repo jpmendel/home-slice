@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+build/
+dist/
+
+.env
+.venv
+.vscode
+
+pip-log.txt
+*.log
+db.sqlite3
+
+.DS_Store

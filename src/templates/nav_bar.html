@@ -1,0 +1,16 @@
+<nav class="nav-bar">
+  <div class="nav-bar-left nav-bar-text">
+    <button type="button">
+      {% include 'icons/menu.svg' %}
+    </button>
+  </div>
+  <div class="nav-bar-right nav-bar-text">
+    <button
+      class="nav-bar-logout-button"
+      type="button"
+      hx-get="{% url 'accounts:logout-api' %}"
+    >
+      Log Out
+    </button>
+  </div>
+</nav>
