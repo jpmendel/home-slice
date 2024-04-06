@@ -1,35 +1,35 @@
 <div id="post-content-{{ post.id }}" class="post-outer">
   <div class="post-inner">
-    <div class="post-content-header text-body">
-      <b>{{ post.author_name }}</b> {{ post.created_at_string }}
+    <div class="post-header">
+      <h1 class="post-title text-body">
+        <b>{{ post.author_name }}</b> {{ post.created_at_string }}{% if post.is_edited %} <i class="post-edited">(edited)</i>{% endif %}
+      </h1>
+      <div class="post-header-button-row">
+        <div class="post-header-button">
+          <button
+            type="button"
+            hx-get="{% url 'posts:api-posts-edit-start' post_id=post.id %}"
+            hx-target="#post-content-{{ post.id }}"
+            hx-swap="outerHTML"
+          >
+            {% include 'icons/edit.svg' %}
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            hx-delete="{% url 'posts:api-posts-one' post_id=post.id %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+            hx-target="#post-content-{{ post.id }}"
+            hx-swap="outerHTML"
+          >
+            {% include 'icons/delete.svg' %}
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="post-content-text text-body">
+    <p class="text-body">
       {{ post.content }}
-    </div>
-    <div class="post-button-row">
-      <div class="post-left-button-container">
-        <button
-          class="post-button button-secondary"
-          type="button"
-          hx-get="{% url 'posts:start-edit-post-api' post_id=post.id %}"
-          hx-target="#post-content-{{ post.id }}"
-          hx-swap="outerHTML"
-        >
-          Edit
-        </button>
-      </div>
-      <div class="post-right-button-container">
-        <button
-          class="post-button button-destructive"
-          type="button"
-          hx-delete="{% url 'posts:posts-api-one' post_id=post.id %}"
-          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-          hx-target="#post-content-{{ post.id }}"
-          hx-swap="outerHTML"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
+    </p>
   </div>
 </div>

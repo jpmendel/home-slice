@@ -14,7 +14,7 @@
   <div class="login-outer">
     <div class="login-inner">
       <h1 class="login-title text-title">Welcome!</h1>
-      <form hx-post="{% url 'accounts:login-api' %}" hx-swap="none">
+      <form hx-post="{% url 'accounts:api-login' %}" hx-swap="none">
         {% csrf_token %}
         <div>
           <div class="login-label text-caption">

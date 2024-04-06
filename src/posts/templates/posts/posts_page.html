@@ -12,12 +12,11 @@
 {% endblock %}
 
 {% block body %}
-  {% include 'nav_bar.html' %}
-  <div class="posts-list-container">
+  {% include 'nav_bar.html' with title='Posts' %}
+  <div class="post-list-container">
     <div
-      id="posts-list"
-      class="posts-list-layout"
-      hx-get="{% url 'posts:posts-api' %}"
+      class="post-list-layout"
+      hx-get="{% url 'posts:api-posts' %}"
       hx-trigger="load"
     ></div>
   </div>
@@ -25,7 +24,7 @@
     <button
       class="post-create-button"
       type="button"
-      hx-get="{% url 'posts:start-create-post-api' %}"
+      hx-get="{% url 'posts:api-posts-create-start' %}"
       hx-target="#create-post-form"
       hx-swap="outerHTML"
     >

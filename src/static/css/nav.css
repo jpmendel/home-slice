@@ -1,5 +1,6 @@
 .nav-bar {
   display: flex;
+  justify-content: center;
   align-items: center;
   height: 50px;
   padding: 12px 16px;
@@ -7,18 +8,36 @@
 }
 
 .nav-bar-left {
-  display: flex;
   flex: 1;
+  display: flex;
   justify-content: left;
 }
 
+.nav-bar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .nav-bar-right {
+  flex: 1;
   display: flex;
   justify-content: right;
 }
 
 .nav-bar-text {
   color: white;
+}
+
+.nav-bar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.nav-bar-menu-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-bar-logout-button {

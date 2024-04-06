@@ -2,13 +2,16 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.db.utils import IntegrityError
 from django.urls import reverse
 from django.http import (
     HttpRequest,
     HttpResponse,
     HttpResponseRedirect,
     HttpResponseBadRequest,
+    HttpResponseNotFound,
     HttpResponseNotAllowed,
+    HttpResponseServerError,
 )
 
 
@@ -23,8 +26,8 @@ def login_action(request: HttpRequest) -> HttpResponse:
         return HttpResponseNotAllowed(["POST"])
 
     body = request.POST
-    username = body["username"]
-    password = body["password"]
+    username = body.get("username")
+    password = body.get("password")
 
     if username is None or password is None:
         return HttpResponseBadRequest("Invalid username or password")
@@ -35,18 +38,18 @@ def login_action(request: HttpRequest) -> HttpResponse:
 
     login(request=request, user=user)
     response = HttpResponse()
-    response["HX-Redirect"] = reverse("posts:posts-page")
+    response["HX-Redirect"] = reverse("posts:page-posts")
     return response
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def logout_action(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
 
     logout(request=request)
     response = HttpResponse()
-    response["HX-Redirect"] = reverse("accounts:login-page")
+    response["HX-Redirect"] = reverse("accounts:page-login")
     return response
 
 
@@ -60,33 +63,38 @@ def user_api(request: HttpRequest, username: str | None = None) -> HttpResponse:
 
 def create_user(request: HttpRequest) -> HttpResponse:
     body = request.POST
-    username = body["username"]
-    password = body["password"]
+    username = body.get("username")
+    password = body.get("password")
 
     if username is None or password is None:
         return HttpResponseBadRequest("Username and password required")
 
-    if "isAdmin" in body and body["isAdmin"]:
-        User.objects.create_superuser(
-            username=username,
-            password=password,
-            email=None,
-        )
-    else:
-        User.objects.create_user(
-            username=username,
-            password=password,
-        )
-    return HttpResponse()
+    try:
+        if "isAdmin" in body and body.get("isAdmin"):
+            User.objects.create_superuser(
+                username=username,
+                password=password,
+                email=None,
+            )
+        else:
+            User.objects.create_user(
+                username=username,
+                password=password,
+            )
+        return HttpResponse()
+    except IntegrityError:
+        return HttpResponseBadRequest(f'User with name "{username}" already exists')
+    except:
+        return HttpResponseServerError("An unknown error occurred")
 
 
-def delete_user(_request: HttpRequest, username: str | None) -> HttpResponse:
+def delete_user(request: HttpRequest, username: str | None) -> HttpResponse:
     if username is None:
-        return HttpResponseBadRequest("Must provide username to delete")
+        return HttpResponseBadRequest("Username must be provided to delete")
 
     try:
         user = User.objects.get(username=username)
         user.delete()
         return HttpResponse()
     except:
-        return HttpResponseBadRequest(f'User with username "{username}" not found')
+        return HttpResponseNotFound(f'User with username "{username}" not found')

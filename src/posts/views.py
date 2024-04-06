@@ -1,43 +1,51 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpRequest,
     HttpResponse,
     HttpResponseBadRequest,
+    HttpResponseNotFound,
     HttpResponseNotAllowed,
     QueryDict,
 )
 from .models import Post
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def posts_page(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/posts_page.html")
 
 
-@login_required(login_url="accounts:login-page")
-def start_post(request: HttpRequest) -> HttpResponse:
+@login_required(login_url="accounts:page-login")
+def start_create_post(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/create_post_form.html")
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def cancel_create_post(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/empty_create_post_form.html")
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
-    post = Post.objects.get(id=post_id)
-    return render(request, "posts/edit_post_form.html", {"post": post})
+    try:
+        post = Post.objects.get(id=post_id)
+        return render(request, "posts/edit_post_form.html", {"post": post})
+    except:
+        return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
-    post = Post.objects.get(id=post_id)
-    return render(request, "posts/post_content.html", {"post": post})
+    try:
+        post = Post.objects.get(id=post_id)
+        return render(request, "posts/post_content.html", {"post": post})
+    except:
+        return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
 
 
-@login_required(login_url="accounts:login-page")
+@login_required(login_url="accounts:page-login")
 def posts_api(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
     if request.method == "GET":
         return get_posts(request, post_id)
@@ -56,14 +64,14 @@ def get_posts(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
             post = Post.objects.get(id=post_id)
             return render(request, "posts/post_content.html", {"post": post})
         except:
-            return HttpResponseBadRequest(f'Post with id "{post_id}" does not exist')
+            return HttpResponseNotFound(f'Post with id "{post_id}" not found')
 
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts/posts_list.html", {"posts": posts})
 
 
 def create_post(request: HttpRequest) -> HttpResponse:
-    content = request.POST["content"]
+    content = request.POST.get("content")
     if content is None:
         return HttpResponseBadRequest("Post requires content to create")
 
@@ -74,26 +82,28 @@ def create_post(request: HttpRequest) -> HttpResponse:
 
 def update_post(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
     if post_id is None:
-        return HttpResponseBadRequest("Must provide post ID to update")
+        return HttpResponseBadRequest("Post ID is required to update")
 
     try:
         body = QueryDict(request.body)
+        content = body.get("content")
         post = Post.objects.get(id=post_id)
-        if "content" in body:
-            post.content = body["content"]
+        if content is not None and content != post.content:
+            post.content = content
+            post.updated_at = datetime.today()
         post.save()
         return render(request, "posts/post_content.html", {"post": post})
     except:
-        return HttpResponseBadRequest(f'User with username "{post_id}" not found')
+        return HttpResponseNotFound(f'User with username "{post_id}" not found')
 
 
 def delete_post(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
     if post_id is None:
-        return HttpResponseBadRequest("Must provide post ID to delete")
+        return HttpResponseBadRequest("Post ID is required to delete")
 
     try:
         post = Post.objects.get(id=post_id)
         post.delete()
         return HttpResponse()
     except:
-        return HttpResponseBadRequest(f'User with username "{post_id}" not found')
+        return HttpResponseNotFound(f'User with username "{post_id}" not found')

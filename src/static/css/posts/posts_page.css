@@ -1,8 +1,8 @@
-.posts-list-container {
+.post-list-container {
   margin: 12px;
 }
 
-.posts-list-layout {
+.post-list-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,23 +29,36 @@
 
 .post-create-button-container {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 20px;
+  right: 20px;
 }
 
 .post-create-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 60px;
   height: 60px;
   border-radius: 30px;
   background-color: cornflowerblue;
 }
 
-.post-content-header {
+.post-header {
+  display: flex;
   margin-bottom: 8px;
 }
 
-.post-content-text {
-  margin-bottom: 12px;
+.post-title {
+  flex: 1;
+}
+
+.post-header-button-row {
+  display: flex;
+  gap: 6px;
+}
+
+.post-edited {
+  color: dimgray;
 }
 
 .create-post-header {
@@ -69,6 +82,11 @@
   display: flex;
 }
 
+.post-button-row-small {
+  display: flex;
+  gap: 6px;
+}
+
 .post-left-button-container {
   width: 50%;
   padding-right: 6px;
@@ -81,4 +99,9 @@
 
 .post-button {
   width: 100%;
+}
+
+.post-button-small {
+  width: 60px;
+  padding: 4px 2px;
 }

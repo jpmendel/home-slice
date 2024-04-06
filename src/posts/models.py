@@ -9,6 +9,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     content = models.TextField(max_length=1024)
     created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, default=None)
 
     def __str__(self):
         # pylint: disable=no-member
@@ -29,3 +30,6 @@ class Post(models.Model):
         if zoned_date.year == today.year:
             return f"on {zoned_datetime.strftime("%-m/%-d")}"
         return f"on {zoned_date.strftime("%-m/%-d/%y")}"
+
+    def is_edited(self):
+        return self.updated_at is not None

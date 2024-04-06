@@ -1,14 +1,17 @@
 <nav class="nav-bar">
   <div class="nav-bar-left nav-bar-text">
-    <button type="button">
+    <button class="nav-bar-menu-button" type="button">
       {% include 'icons/menu.svg' %}
     </button>
+  </div>
+  <div class="nav-bar-center nav-bar-text nav-bar-title">
+    {{ title }}
   </div>
   <div class="nav-bar-right nav-bar-text">
     <button
       class="nav-bar-logout-button"
       type="button"
-      hx-get="{% url 'accounts:logout-api' %}"
+      hx-get="{% url 'accounts:api-logout' %}"
     >
       Log Out
     </button>
