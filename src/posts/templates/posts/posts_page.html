@@ -20,4 +20,13 @@
       hx-trigger="load"
     ></div>
   </div>
+  <div class="post-create-button-container">
+    <button
+      class="post-create-button"
+      type="button"
+      onclick="window.location = `{% url 'posts:create-post-page' %}`"
+    >
+      {% include 'icons/plus.svg' %}
+    </button>
+  </div>
 {% endblock %}

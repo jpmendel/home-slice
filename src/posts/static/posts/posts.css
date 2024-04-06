@@ -31,3 +31,16 @@
   background-color: lightgray;
   border-radius: 8px;
 }
+
+.post-create-button-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+}
+
+.post-create-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: cornflowerblue;
+}
