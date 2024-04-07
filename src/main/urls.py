@@ -7,12 +7,13 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return HttpResponseRedirect(reverse("posts:posts-page"))
+    return HttpResponseRedirect(reverse("posts:page-posts"))
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(("accounts.urls", "accounts"), namespace="accounts")),
     path("", include(("posts.urls", "posts"), namespace="posts")),
+    path("", include(("finance.urls", "finance"), namespace="finance")),
     path("", home, name="home"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

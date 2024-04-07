@@ -5,8 +5,8 @@ load_dotenv()
 
 # Root Config
 
-DEBUG = str(os.environ["ENV_NAME"]) == "development"
-SECRET_KEY = str(os.environ["SECRET_KEY"])
+DEBUG = str(os.environ.get("ENV_NAME")) == "development"
+SECRET_KEY = str(os.environ.get("SECRET_KEY"))
 ALLOWED_HOSTS = ["localhost"]
 
 
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts",
     "posts",
+    "finance",
 ]
 
 

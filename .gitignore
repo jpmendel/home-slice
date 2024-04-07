@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+pip-log.txt
+*.log
 
 build/
 dist/
@@ -9,8 +11,7 @@ dist/
 .venv
 .vscode
 
-pip-log.txt
-*.log
 db.sqlite3
+src/finance/stocks/
 
 .DS_Store
