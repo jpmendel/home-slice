@@ -6,12 +6,12 @@ pip-log.txt
 
 build/
 dist/
+local/
 
 .env
 .venv
 .vscode
 
 db.sqlite3
-src/finance/stocks/
 
 .DS_Store

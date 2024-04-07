@@ -1,7 +1,7 @@
-import os
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.apps import apps
 from django.http import (
     HttpRequest,
     HttpResponse,
@@ -9,11 +9,12 @@ from django.http import (
     HttpResponseNotAllowed,
     HttpResponseServerError,
 )
+from .services import StockPriceService
 
-if str(os.environ.get("STOCKS_PROVIDER")) == "live":
-    from .services import LiveStockPriceService as StockPriceService
-else:
-    from .services import LocalStockPriceService as StockPriceService
+
+def stock_price_service() -> StockPriceService:
+    config = apps.get_app_config("finance")
+    return config.stock_price_service  # type: ignore
 
 
 @login_required(login_url="accounts:page-login")
@@ -34,7 +35,11 @@ def stocks_api(request: HttpRequest) -> HttpResponse:
     today = datetime.today()
     last_30_days = today - timedelta(days=30)
     try:
-        image_data = StockPriceService().create_price_plot(symbol, last_30_days, today)
+        image_data = stock_price_service().create_price_plot(
+            symbol,
+            last_30_days,
+            today,
+        )
         return render(
             request, "finance/stock_price_plot.html", {"image_data": image_data}
         )

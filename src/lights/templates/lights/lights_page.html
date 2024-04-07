@@ -1,0 +1,17 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+
+{% block title %}
+  Lights
+{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/finance/lights_page.css' %}">
+{% endblock %}
+
+{% block body %}
+  {% include 'nav_bar.html' with title='Lights' %}
+  <div></div>
+{% endblock %}

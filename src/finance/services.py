@@ -53,7 +53,7 @@ class StockPriceService:
 
 class LiveStockPriceService(StockPriceService):
     def data_file_path(self, symbol: str) -> str:
-        return os.path.abspath(os.path.join(__file__, "stocks/" + symbol + ".csv"))
+        return os.path.abspath(os.path.join(__file__, "../local/" + symbol + ".csv"))
 
     def load_price_info(
         self, symbol: str, start: datetime, end: datetime
@@ -85,7 +85,7 @@ class LocalStockPriceService(StockPriceService):
         def price_function(day: int):
             return pow(day, 2)
 
-        for day in range(0, day_range):
+        for day in range(day_range):
             date = start + timedelta(days=day)
             price = price_function(day)
             data.append((date.strftime("%Y-%m-%d"), price, price + 1, price - 1, price))
