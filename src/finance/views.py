@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpRequest,
     HttpResponse,
+    HttpResponseBadRequest,
     HttpResponseNotAllowed,
     HttpResponseServerError,
 )
 
-if str(os.environ.get("STOCK_PROVIDER")) == "live":
+if str(os.environ.get("STOCKS_PROVIDER")) == "live":
     from .services import LiveStockPriceService as StockPriceService
 else:
     from .services import LocalStockPriceService as StockPriceService
@@ -21,18 +22,19 @@ def stocks_page(request: HttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="accounts:page-login")
-def stocks_api(request: HttpRequest, symbol: str) -> HttpResponse:
+def stocks_api(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
+
+    symbol = request.GET.get("symbol")
+    if symbol is None or symbol == "":
+        return HttpResponseBadRequest("Must provide stock symbol")
+    symbol = symbol.upper()
 
     today = datetime.today()
     last_30_days = today - timedelta(days=30)
     try:
-        image_data = StockPriceService().create_price_plot(
-            symbol,
-            last_30_days.strftime("%Y-%m-%d"),
-            today.strftime("%Y-%m-%d"),
-        )
+        image_data = StockPriceService().create_price_plot(symbol, last_30_days, today)
         return render(
             request, "finance/stock_price_plot.html", {"image_data": image_data}
         )

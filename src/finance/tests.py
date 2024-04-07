@@ -10,5 +10,9 @@ class TestStockPricePlot(TestCase):
             self.fail()
 
     def test_get_stocks_success(self):
-        response = self.client.get("/api/stocks/STOCK")
+        response = self.client.get("/api/stocks?symbol=STOCK")
         self.assertEqual(response.status_code, 200)
+
+    def test_get_stocks_missing_info(self):
+        response = self.client.get("/api/stocks")
+        self.assertEqual(response.status_code, 400)

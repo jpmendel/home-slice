@@ -13,5 +13,35 @@
 
 {% block body %}
   {% include 'nav_bar.html' with title='Stocks' %}
-  <div></div>
+  <div class="stocks-container">
+    <div>
+      <form
+        class="stocks-symbol-entry-container"
+        hx-get="{% url 'finance:api-stocks' %}"
+        hx-params="symbol"
+        hx-target="#stocks-price-plot"
+        hx-indicator="#stocks-loading-indicator"
+      >
+        <div class="stocks-symbol-input-container">
+          <input
+            class="stocks-symbol-input text-body"
+            name="symbol"
+            type="text"
+            placeholder="Ticker"
+          >
+        </div>
+        <div>
+          <button class="button-primary" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+      <div class="stocks-price-plot-container">
+        <div id="stocks-loading-indicator" class="htmx-indicator text-subtitle">
+          Loading...
+        </div>
+        <div id="stocks-price-plot"></div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
