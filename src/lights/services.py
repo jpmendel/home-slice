@@ -43,6 +43,10 @@ class LightStripService:
         self.set_solid_color(0, 0, 0)
 
 
+# We kind of need to ignore all code in this class and just trust that it works.
+# The code from the ws281x library can only install properly on the ARM
+# processor of a Rasbperry Pi, so it will cause a ton of errors when using
+# another architecture for development.
 class HardwareLightStripService(LightStripService):
     pixel_strip: PixelStrip
 
@@ -81,6 +85,8 @@ class HardwareLightStripService(LightStripService):
         self.pixel_strip.show()  # type: ignore
 
 
+# Use this version of the class if you are running on something other than
+# a Raspberry Pi connected to a physical light strip.
 class LocalLightStripService(LightStripService):
     leds: List[Tuple[int, int, int]]
     output_file: str | None
