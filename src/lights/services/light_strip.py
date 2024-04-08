@@ -6,7 +6,6 @@ from typing import List, Tuple
 from ..models import ColorPattern
 
 
-# pylint: disable=unnecessary-lambda-assignment
 class LightStripService:
     task_executor: ThreadPoolExecutor
     animation: Future | None
