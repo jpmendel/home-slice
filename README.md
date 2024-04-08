@@ -1,3 +1,3 @@
-# Raspberry Pi Home Server
+# HomeSlice
 
-A Raspberry Pi Zero home server application built using Python, Django and HTMX.
+A Raspberry Pi Zero home server application built using Python, Django, HTMX and SQLite.

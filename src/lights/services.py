@@ -1,12 +1,13 @@
 import os
 from abc import abstractmethod
+from concurrent.futures import ThreadPoolExecutor, Future
 from typing import List, Tuple
 
 if str(os.environ.get("LIGHTS_PROVIDER")) == "hardware":
     # pylint: disable-all
     from rpi_ws281x import PixelStrip, Color  # type: ignore
 else:
-
+    # Blank classes to keep the error checker happy
     class PixelStrip:
         pass
 
@@ -15,8 +16,12 @@ else:
 
 
 class LightStripService:
+    task_executor: ThreadPoolExecutor
+    current_animation_task: Future | None
+
     def __init__(self):
-        pass
+        self.task_executor = ThreadPoolExecutor(max_workers=1)
+        self.current_animation_task = None
 
     @abstractmethod
     def setup(self):
