@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
 from django.http import HttpRequest, HttpResponse
-from .services import LightStripService
+from .services.light_strip import LightStripService
 
 
 def light_strip_service() -> LightStripService:

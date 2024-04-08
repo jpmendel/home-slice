@@ -1,6 +1,6 @@
 import os
 from django.apps import AppConfig
-from .services import LightStripService
+from .services.light_strip import LightStripService
 
 
 class LightsConfig(AppConfig):
@@ -10,7 +10,7 @@ class LightsConfig(AppConfig):
     def ready(self):
         # pylint: disable=import-outside-toplevel
         if str(os.environ.get("LIGHTS_PROVIDER")) == "hardware":
-            from .services import HardwareLightStripService
+            from .services.hardware import HardwareLightStripService
 
             self.light_strip_service = HardwareLightStripService(
                 led_count=60,
@@ -19,7 +19,7 @@ class LightsConfig(AppConfig):
                 led_brightness=20,
             )
         else:
-            from .services import LocalLightStripService
+            from .services.local import LocalLightStripService
 
             self.light_strip_service = LocalLightStripService(
                 led_count=30,
