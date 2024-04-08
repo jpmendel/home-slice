@@ -1,0 +1,7 @@
+- */local/***
+- */__pycache__/***
+- */db.sqlite3
++ /src/***
++ /requirements/***
++ .pylintrc
+- *
