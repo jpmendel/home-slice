@@ -9,20 +9,22 @@ from django.http import (
     HttpResponseNotAllowed,
     HttpResponseServerError,
 )
+from .apps import FinanceConfig
 from .services import StockPriceService
 
 
 def stock_price_service() -> StockPriceService:
     config = apps.get_app_config("finance")
-    return config.stock_price_service  # type: ignore
+    assert isinstance(config, FinanceConfig)
+    return config.stock_price_service
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def stocks_page(request: HttpRequest) -> HttpResponse:
     return render(request, "finance/stocks_page.html")
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def stocks_api(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])

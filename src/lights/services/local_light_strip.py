@@ -1,11 +1,11 @@
-from typing import List, Tuple
+from typing import Tuple
 from .light_strip import LightStripService
 
 
 # Use this version of the class if you are running on something other than
 # a Raspberry Pi connected to a physical light strip.
 class LocalLightStripService(LightStripService):
-    leds: List[Tuple[int, int, int]]
+    leds: list[Tuple[int, int, int]]
     output_file: str | None
     is_started: bool
 

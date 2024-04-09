@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db.utils import IntegrityError
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.http import (
     HttpRequest,
     HttpResponse,
@@ -21,6 +21,10 @@ def login_page(request: HttpRequest) -> HttpResponse:
     return render(request, "accounts/login_page.html")
 
 
+def settings_page(request: HttpRequest) -> HttpResponse:
+    return render(request, "accounts/settings_page.html")
+
+
 def login_action(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
@@ -28,6 +32,7 @@ def login_action(request: HttpRequest) -> HttpResponse:
     body = request.POST
     username = body.get("username")
     password = body.get("password")
+    next_page = body.get("next")
 
     if username is None or password is None:
         return HttpResponseBadRequest("Invalid username or password")
@@ -35,14 +40,20 @@ def login_action(request: HttpRequest) -> HttpResponse:
     user = authenticate(username=username, password=password)
     if user is None:
         return HttpResponseBadRequest("Invalid username or password")
-
     login(request=request, user=user)
+
+    next_url: str | None = None
+    if next_page:
+        try:
+            next_url = next_page if resolve(next_page) else None
+        except:
+            pass
     response = HttpResponse()
-    response["HX-Redirect"] = reverse("posts:page-posts")
+    response["HX-Redirect"] = next_url or reverse("home")
     return response
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def logout_action(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
@@ -53,6 +64,7 @@ def logout_action(request: HttpRequest) -> HttpResponse:
     return response
 
 
+@login_required
 def user_api(request: HttpRequest, username: str | None = None) -> HttpResponse:
     if request.method == "POST":
         return create_user(request)

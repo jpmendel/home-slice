@@ -44,6 +44,13 @@
             >
           </div>
         </div>
+        {% if request.GET.next %}
+          <input
+            type="hidden"
+            name="next"
+            value="{{ request.GET.next }}"
+          >
+        {% endif %}
         <div class="login-button-container">
           <button class="login-button button-primary" type="submit">Log In</button>
         </div>

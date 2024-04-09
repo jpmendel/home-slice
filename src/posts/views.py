@@ -12,22 +12,22 @@ from django.http import (
 from .models import Post
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def posts_page(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/posts_page.html")
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def start_create_post(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/create_post_form.html")
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def cancel_create_post(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/empty_create_post_form.html")
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
     try:
         post = Post.objects.get(id=post_id)
@@ -36,7 +36,7 @@ def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
         return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
     try:
         post = Post.objects.get(id=post_id)
@@ -45,7 +45,7 @@ def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
         return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
 
 
-@login_required(login_url="accounts:page-login")
+@login_required
 def posts_api(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
     if request.method == "GET":
         return get_posts(request, post_id)

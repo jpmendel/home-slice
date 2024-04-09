@@ -2,8 +2,16 @@ import time
 from abc import abstractmethod
 from concurrent.futures import ThreadPoolExecutor, Future
 from threading import Event as ThreadingEvent
-from typing import List, Tuple
-from ..models import ColorPattern
+from typing import Tuple
+from ..models import (
+    ColorPattern,
+    ColorAnimation,
+    SequenceColorAnimation,
+    FadeColorAnimation,
+    LinearSweepColorAnimation,
+    BinarySweepColorAnimation,
+    SnakeColorAnimation,
+)
 
 
 class LightStripService:
@@ -40,7 +48,7 @@ class LightStripService:
     def clear_color(self):
         self.set_solid_color(0, 0, 0)
 
-    def create_pattern(self, colors: List[ColorPattern]) -> List[Tuple[int, int, int]]:
+    def create_pattern(self, colors: list[ColorPattern]) -> list[Tuple[int, int, int]]:
         leds = []
         color_index = 0
         color_step = 0
@@ -54,68 +62,64 @@ class LightStripService:
             leds.append(pattern.color)
         return leds
 
-    def set_pattern(self, colors: List[ColorPattern]):
+    def set_pattern(self, colors: list[ColorPattern]):
         pattern = self.create_pattern(colors)
         for index, (r, g, b) in enumerate(pattern):
             self.set_led(r, g, b, index)
         self.update()
 
-    def set_animation(self, animations: list, repeat: int = 0):
+    def set_animation(self, animations: list[ColorAnimation], repeat: int = 0):
         self.cancel_event = ThreadingEvent()
         self.task_executor.submit(self.play_animations, animations, repeat)
 
-    def play_animations(self, animations: list, repeat: int = 0):
+    def play_animations(self, animations: list[ColorAnimation], repeat: int = 0):
         for _ in range(repeat + 1):
             if self.cancel_event and self.cancel_event.is_set():
                 break
             for anim in animations:
-                anim_type = anim.get("type")
-                properties = anim.get("properties")
-                if "colors" not in properties:
-                    continue
-                if anim_type == "sequence":
+                if isinstance(anim, SequenceColorAnimation):
                     self.play_sequence_animation(
-                        properties.get("colors"),
-                        properties.get("duration", 1.0),
+                        anim.colors,
+                        anim.duration or 1,
                     )
-                elif anim_type == "fade":
+                elif isinstance(anim, FadeColorAnimation):
                     self.play_fade_animation(
-                        properties.get("colors"),
-                        properties.get("duration", 1.0),
-                        properties.get("start", 0.0),
-                        properties.get("end", 1.0),
+                        anim.colors,
+                        anim.duration or 1,
+                        anim.start or 0,
+                        anim.end or 1,
                     )
-                elif anim_type == "linear":
+                elif isinstance(anim, LinearSweepColorAnimation):
                     self.play_linear_sweep_animation(
-                        properties.get("colors"),
-                        properties.get("duration", 1.0),
-                        properties.get("start", 0),
-                        properties.get("end", self.led_count()),
+                        anim.colors,
+                        anim.duration or 1,
+                        anim.start or 0,
+                        anim.end or self.led_count(),
                     )
-                elif anim_type == "binary":
+                elif isinstance(anim, BinarySweepColorAnimation):
                     self.play_binary_sweep_animation(
-                        properties.get("colors"),
-                        properties.get("duration", 1.0),
-                        properties.get("start", 0),
-                        properties.get("end", self.led_count()),
+                        anim.colors,
+                        anim.duration or 1,
+                        anim.start or 0,
+                        anim.end or self.led_count(),
                     )
-                elif anim_type == "snake":
+                elif isinstance(anim, SnakeColorAnimation):
                     self.play_snake_animation(
-                        properties.get("colors"),
-                        properties.get("duration", 1.0),
-                        properties.get("start", 0),
-                        properties.get("end", self.led_count()),
-                        properties.get("length", 5),
+                        anim.colors,
+                        anim.duration or 1,
+                        anim.start or 0,
+                        anim.end or self.led_count(),
+                        anim.length or 5,
                     )
         self.cancel_event = None
 
-    def play_sequence_animation(self, colors: List[ColorPattern], duration: float):
+    def play_sequence_animation(self, colors: list[ColorPattern], duration: float):
         self.set_pattern(colors)
         time.sleep(duration)
 
     def play_fade_animation(
         self,
-        colors: List[ColorPattern],
+        colors: list[ColorPattern],
         duration: float,
         start: float,
         end: float,
@@ -147,7 +151,7 @@ class LightStripService:
 
     def play_linear_sweep_animation(
         self,
-        colors: List[ColorPattern],
+        colors: list[ColorPattern],
         duration: float,
         start: int,
         end: int,
@@ -163,7 +167,7 @@ class LightStripService:
         step_duration = duration / abs(start_idx - end_idx)
         pattern = self.create_pattern(colors)
         for index in range(start_idx, end_idx, iter_step):
-            if self.cancel_event is not None and self.cancel_event.is_set():
+            if self.cancel_event and self.cancel_event.is_set():
                 break
             r, g, b = pattern[index]
             self.set_led(r, g, b, index)
@@ -172,7 +176,7 @@ class LightStripService:
 
     def play_binary_sweep_animation(
         self,
-        colors: List[ColorPattern],
+        colors: list[ColorPattern],
         duration: float,
         start: int,
         end: int,
@@ -190,7 +194,7 @@ class LightStripService:
         start_pos = center_pos
         end_pos = center_pos
         while start_pos >= start_idx or end_pos < end_idx:
-            if self.cancel_event is not None and self.cancel_event.is_set():
+            if self.cancel_event and self.cancel_event.is_set():
                 break
             if start_pos >= start_idx:
                 r, g, b = pattern[start_pos]
@@ -205,7 +209,7 @@ class LightStripService:
 
     def play_snake_animation(
         self,
-        colors: List[ColorPattern],
+        colors: list[ColorPattern],
         duration: float,
         start: int,
         end: int,
@@ -230,7 +234,7 @@ class LightStripService:
         step_duration = duration / (abs(start_idx - end_idx) + length)
         pattern = self.create_pattern(colors)
         while condition(tail_pos):
-            if self.cancel_event is not None and self.cancel_event.is_set():
+            if self.cancel_event and self.cancel_event.is_set():
                 break
             if is_within_bounds(head_pos):
                 r, g, b = pattern[head_pos]

@@ -10,7 +10,7 @@ class LightsConfig(AppConfig):
     def ready(self):
         # pylint: disable=import-outside-toplevel
         if str(os.environ.get("LIGHTS_PROVIDER")) == "hardware":
-            from .services.hardware import HardwareLightStripService
+            from .services.hardware_light_strip import HardwareLightStripService
 
             self.light_strip_service = HardwareLightStripService(
                 led_count=60,
@@ -19,7 +19,7 @@ class LightsConfig(AppConfig):
                 led_brightness=20,
             )
         else:
-            from .services.local import LocalLightStripService
+            from .services.local_light_strip import LocalLightStripService
 
             self.light_strip_service = LocalLightStripService(
                 led_count=30,

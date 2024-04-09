@@ -81,8 +81,9 @@ DATABASES = {
 }
 
 
-# Password Validation
+# Authentication
 
+LOGIN_URL = "accounts:page-login"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -95,7 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Sessions
+# Authorization
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 14 * 24 * 60 * 60  # 2 weeks

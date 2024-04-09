@@ -86,7 +86,7 @@ class TestLoginLogout(TestCase):
             "/api/login", {"username": "test_user", "password": "testpass123"}
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.headers["HX-Redirect"], reverse("posts:page-posts"))
+        self.assertEqual(response.headers["HX-Redirect"], reverse("home"))
 
     def test_login_empty(self):
         response = self.client.post("/api/login", {})
