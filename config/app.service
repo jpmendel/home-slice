@@ -1,0 +1,13 @@
+[Unit]
+Description=wsgi service
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/pi/app
+Environment="PATH=/home/pi/app/.venv/bin"
+ExecStart=/home/pi/app/.venv/bin/uwsgi --ini config/wsgi.ini
+
+[Install]
+WantedBy=multi-user.target
