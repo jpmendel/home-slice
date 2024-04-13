@@ -6,4 +6,5 @@
 + /requirements/***
 + setup.sh
 + .pylintrc
++ .python_version
 - *
