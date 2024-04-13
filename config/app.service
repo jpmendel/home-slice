@@ -7,10 +7,11 @@ After=network.target
 User=pi
 Group=www-data
 WorkingDirectory=/home/pi/app
+EnvironmentFile=/home/pi/app/.env
 ExecStart=/home/pi/app/.venv/bin/gunicorn \
-    --workers 3 \
+    --chdir ./src/ \
     --bind unix:/run/app.sock \
-    src.main.wsgi:application
+    main.wsgi:application
 
 [Install]
 WantedBy=multi-user.target

@@ -10,4 +10,4 @@ fi
 
 python3.9 -m venv .venv
 source .venv/bin/activate
-pip install -r "requirements/${env}.txt"
+pip3.9 install -r "requirements/${env}.txt"

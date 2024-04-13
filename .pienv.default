@@ -1,0 +1,5 @@
+# The host name of the Raspberry Pi
+RPI_REMOTE_HOST=
+
+# The user used to log into the Raspberry Pi
+RPI_REMOTE_USER=

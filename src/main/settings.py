@@ -7,7 +7,7 @@ load_dotenv()
 
 DEBUG = str(os.environ.get("ENV_NAME")) == "development"
 SECRET_KEY = str(os.environ.get("SECRET_KEY"))
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", str(os.environ.get("WEB_HOST"))]
 
 
 # Base Settings
@@ -67,8 +67,8 @@ TEMPLATES = [
 
 # Static Files (css, js, images, etc)
 
-STATIC_URL = os.path.join(BASE_DIR, "static/")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/")]
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 
 # Database

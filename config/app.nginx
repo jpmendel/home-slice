@@ -3,8 +3,8 @@ server {
   server_name ip_address;
   charset utf-8;
 
-  location /static {
-    alias /home/pi/app/src/static;
+  location /static/ {
+    alias /home/pi/app/src/static/;
   }
 
   location / {
