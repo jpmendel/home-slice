@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Optional, Tuple
 from django.db import models
 
 
@@ -13,9 +13,9 @@ class ColorPattern:
 
 class ColorAnimation:
     colors: list[ColorPattern]
-    duration: float | None
+    duration: Optional[float]
 
-    def __init__(self, colors: list[ColorPattern], duration: float):
+    def __init__(self, colors: list[ColorPattern], duration: Optional[float]):
         self.colors = colors
         self.duration = duration
 
@@ -25,15 +25,15 @@ class SequenceColorAnimation(ColorAnimation):
 
 
 class FadeColorAnimation(ColorAnimation):
-    start: float | None
-    end: float | None
+    start: Optional[float]
+    end: Optional[float]
 
     def __init__(
         self,
         colors: list[ColorPattern],
-        duration: float,
-        start: float,
-        end: float,
+        duration: Optional[float],
+        start: Optional[float],
+        end: Optional[float],
     ):
         super().__init__(colors, duration)
         self.start = start
@@ -41,15 +41,15 @@ class FadeColorAnimation(ColorAnimation):
 
 
 class LinearSweepColorAnimation(ColorAnimation):
-    start: int | None
-    end: int | None
+    start: Optional[int]
+    end: Optional[int]
 
     def __init__(
         self,
         colors: list[ColorPattern],
-        duration: float,
-        start: int,
-        end: int,
+        duration: Optional[float],
+        start: Optional[int],
+        end: Optional[int],
     ):
         super().__init__(colors, duration)
         self.start = start
@@ -57,15 +57,15 @@ class LinearSweepColorAnimation(ColorAnimation):
 
 
 class BinarySweepColorAnimation(ColorAnimation):
-    start: int | None
-    end: int | None
+    start: Optional[int]
+    end: Optional[int]
 
     def __init__(
         self,
         colors: list[ColorPattern],
-        duration: float,
-        start: int,
-        end: int,
+        duration: Optional[float],
+        start: Optional[int],
+        end: Optional[int],
     ):
         super().__init__(colors, duration)
         self.start = start
@@ -73,17 +73,17 @@ class BinarySweepColorAnimation(ColorAnimation):
 
 
 class SnakeColorAnimation(ColorAnimation):
-    start: int | None
-    end: int | None
-    length: int | None
+    start: Optional[int]
+    end: Optional[int]
+    length: Optional[int]
 
     def __init__(
         self,
         colors: list[ColorPattern],
-        duration: float,
-        start: int,
-        end: int,
-        length: int,
+        duration: Optional[float],
+        start: Optional[int],
+        end: Optional[int],
+        length: Optional[int],
     ):
         super().__init__(colors, duration)
         self.start = start

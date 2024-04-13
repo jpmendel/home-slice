@@ -1,3 +1,4 @@
+from typing import Optional
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -42,7 +43,7 @@ def login_action(request: HttpRequest) -> HttpResponse:
         return HttpResponseBadRequest("Invalid username or password")
     login(request=request, user=user)
 
-    next_url: str | None = None
+    next_url: Optional[str] = None
     if next_page:
         try:
             next_url = next_page if resolve(next_page) else None
@@ -65,7 +66,7 @@ def logout_action(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def user_api(request: HttpRequest, username: str | None = None) -> HttpResponse:
+def user_api(request: HttpRequest, username: Optional[str] = None) -> HttpResponse:
     if request.method == "POST":
         return create_user(request)
     if request.method == "DELETE":
@@ -100,7 +101,7 @@ def create_user(request: HttpRequest) -> HttpResponse:
         return HttpResponseServerError("An unknown error occurred")
 
 
-def delete_user(request: HttpRequest, username: str | None) -> HttpResponse:
+def delete_user(request: HttpRequest, username: Optional[str]) -> HttpResponse:
     if username is None:
         return HttpResponseBadRequest("Username must be provided to delete")
 

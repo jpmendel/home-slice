@@ -26,10 +26,10 @@ class Post(models.Model):
         zoned_date = zoned_datetime.date()
         today = datetime.today().astimezone(tz).date()
         if zoned_date == today:
-            return f"at {zoned_datetime.strftime("%-I:%M %p")}"
+            return f"at {zoned_datetime.strftime('%-I:%M %p')}"
         if zoned_date.year == today.year:
-            return f"on {zoned_datetime.strftime("%-m/%-d")}"
-        return f"on {zoned_date.strftime("%-m/%-d/%y")}"
+            return f"on {zoned_datetime.strftime('%-m/%-d')}"
+        return f"on {zoned_date.strftime('%-m/%-d/%y')}"
 
     def is_edited(self):
         return self.updated_at is not None

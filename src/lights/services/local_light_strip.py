@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Optional, Tuple
 from .light_strip import LightStripService
 
 
@@ -6,10 +6,10 @@ from .light_strip import LightStripService
 # a Raspberry Pi connected to a physical light strip.
 class LocalLightStripService(LightStripService):
     leds: list[Tuple[int, int, int]]
-    output_file: str | None
+    output_file: Optional[str]
     is_started: bool
 
-    def __init__(self, led_count: int, output_file: str | None = None):
+    def __init__(self, led_count: int, output_file: Optional[str] = None):
         super().__init__()
         self.leds = [(0, 0, 0)] * led_count
         self.output_file = output_file

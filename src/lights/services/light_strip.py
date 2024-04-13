@@ -2,7 +2,7 @@ import time
 from abc import abstractmethod
 from concurrent.futures import ThreadPoolExecutor, Future
 from threading import Event as ThreadingEvent
-from typing import Tuple
+from typing import Optional, Tuple
 from ..models import (
     ColorPattern,
     ColorAnimation,
@@ -16,8 +16,8 @@ from ..models import (
 
 class LightStripService:
     task_executor: ThreadPoolExecutor
-    animation: Future | None
-    cancel_event: ThreadingEvent | None
+    animation: Optional[Future]
+    cancel_event: Optional[ThreadingEvent]
 
     def __init__(self):
         self.task_executor = ThreadPoolExecutor(max_workers=1)

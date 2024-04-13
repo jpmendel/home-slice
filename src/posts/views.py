@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import (
@@ -28,7 +29,7 @@ def cancel_create_post(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
+def start_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpResponse:
     try:
         post = Post.objects.get(id=post_id)
         return render(request, "posts/edit_post_form.html", {"post": post})
@@ -37,7 +38,7 @@ def start_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
 
 
 @login_required
-def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
+def cancel_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpResponse:
     try:
         post = Post.objects.get(id=post_id)
         return render(request, "posts/post_content.html", {"post": post})
@@ -46,7 +47,7 @@ def cancel_edit_post(request: HttpRequest, post_id: int | None) -> HttpResponse:
 
 
 @login_required
-def posts_api(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
+def posts_api(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
     if request.method == "GET":
         return get_posts(request, post_id)
     if request.method == "POST":
@@ -58,7 +59,7 @@ def posts_api(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
     return HttpResponseNotAllowed(["GET", "POST", "PUT", "DELETE"])
 
 
-def get_posts(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
+def get_posts(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
     if post_id is not None:
         try:
             post = Post.objects.get(id=post_id)
@@ -80,7 +81,7 @@ def create_post(request: HttpRequest) -> HttpResponse:
     return render(request, "posts/new_created_post.html", {"post": post})
 
 
-def update_post(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
+def update_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
     if post_id is None:
         return HttpResponseBadRequest("Post ID is required to update")
 
@@ -97,7 +98,7 @@ def update_post(request: HttpRequest, post_id: int | None = None) -> HttpRespons
         return HttpResponseNotFound(f'User with username "{post_id}" not found')
 
 
-def delete_post(request: HttpRequest, post_id: int | None = None) -> HttpResponse:
+def delete_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
     if post_id is None:
         return HttpResponseBadRequest("Post ID is required to delete")
 
