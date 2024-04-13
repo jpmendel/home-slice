@@ -3,6 +3,10 @@ server {
   server_name ip_address;
   charset utf-8;
 
+  location /static/admin/ {
+    alias /home/pi/app/.venv/lib/python3.9/site-packages/django/contrib/admin/static/admin/;
+  }
+
   location /static/ {
     alias /home/pi/app/src/static/;
   }
