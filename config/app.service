@@ -1,13 +1,16 @@
 [Unit]
 Description=wsgi service
+Requires=app.socket
 After=network.target
 
 [Service]
-User=root
+User=pi
 Group=www-data
 WorkingDirectory=/home/pi/app
-Environment="PATH=/home/pi/app/.venv/bin"
-ExecStart=/home/pi/app/.venv/bin/uwsgi --ini config/wsgi.ini
+ExecStart=/home/pi/app/.venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/run/app.sock \
+    src.main.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
