@@ -21,6 +21,8 @@ def stock_price_service() -> StockPriceService:
 
 @login_required
 def stocks_page(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     return render(request, "finance/stocks_page.html")
 
 

@@ -1,8 +1,9 @@
 from typing import Optional, Tuple
 from django.db import models
+from django.contrib.auth.models import User
 
 
-class ColorPattern:
+class ColorPatternStep:
     color: Tuple[int, int, int]
     step: int
 
@@ -12,10 +13,10 @@ class ColorPattern:
 
 
 class ColorAnimation:
-    colors: list[ColorPattern]
+    colors: list[ColorPatternStep]
     duration: Optional[float]
 
-    def __init__(self, colors: list[ColorPattern], duration: Optional[float]):
+    def __init__(self, colors: list[ColorPatternStep], duration: Optional[float]):
         self.colors = colors
         self.duration = duration
 
@@ -30,7 +31,7 @@ class FadeColorAnimation(ColorAnimation):
 
     def __init__(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: Optional[float],
         start: Optional[float],
         end: Optional[float],
@@ -46,7 +47,7 @@ class LinearSweepColorAnimation(ColorAnimation):
 
     def __init__(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: Optional[float],
         start: Optional[int],
         end: Optional[int],
@@ -62,7 +63,7 @@ class BinarySweepColorAnimation(ColorAnimation):
 
     def __init__(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: Optional[float],
         start: Optional[int],
         end: Optional[int],
@@ -79,7 +80,7 @@ class SnakeColorAnimation(ColorAnimation):
 
     def __init__(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: Optional[float],
         start: Optional[int],
         end: Optional[int],
@@ -89,3 +90,31 @@ class SnakeColorAnimation(ColorAnimation):
         self.start = start
         self.end = end
         self.length = length
+
+
+class InProgressColorPattern(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    index = models.IntegerField()
+    pattern = models.JSONField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["username", "index"], name="unique_username_index"
+            )
+        ]
+
+
+class InProgressColorAnimation(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    index = models.IntegerField()
+    animation = models.JSONField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["username", "index"], name="unique_username_index"
+            )
+        ]

@@ -9,5 +9,11 @@ if [ "${env}" != "dev" -a "${env}" != "prod" ]; then
 fi
 
 python3.9 -m venv .venv
+echo "Created virtual environment"
+
 source .venv/bin/activate
 pip3.9 install -r "requirements/${env}.txt"
+echo "Installed dependencies"
+
+cp .env.default .env
+echo "Created .env file"

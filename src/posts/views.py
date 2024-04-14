@@ -15,21 +15,30 @@ from .models import Post
 
 @login_required
 def posts_page(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     return render(request, "posts/posts_page.html")
 
 
 @login_required
 def start_create_post(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     return render(request, "posts/create_post_form.html")
 
 
 @login_required
 def cancel_create_post(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     return render(request, "posts/empty_create_post_form.html")
 
 
 @login_required
 def start_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+
     try:
         post = Post.objects.get(id=post_id)
         return render(request, "posts/edit_post_form.html", {"post": post})
@@ -39,6 +48,9 @@ def start_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpRespons
 
 @login_required
 def cancel_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+
     try:
         post = Post.objects.get(id=post_id)
         return render(request, "posts/post_content.html", {"post": post})

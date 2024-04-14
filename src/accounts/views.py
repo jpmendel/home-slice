@@ -17,12 +17,16 @@ from django.http import (
 
 
 def login_page(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("home"))
     return render(request, "accounts/login_page.html")
 
 
 def settings_page(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
     return render(request, "accounts/settings_page.html")
 
 

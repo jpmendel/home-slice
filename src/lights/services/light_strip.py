@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, Future
 from threading import Event as ThreadingEvent
 from typing import Optional, Tuple
 from ..models import (
-    ColorPattern,
+    ColorPatternStep,
     ColorAnimation,
     SequenceColorAnimation,
     FadeColorAnimation,
@@ -48,7 +48,9 @@ class LightStripService:
     def clear_color(self):
         self.set_solid_color(0, 0, 0)
 
-    def create_pattern(self, colors: list[ColorPattern]) -> list[Tuple[int, int, int]]:
+    def create_pattern(
+        self, colors: list[ColorPatternStep]
+    ) -> list[Tuple[int, int, int]]:
         leds = []
         color_index = 0
         color_step = 0
@@ -62,7 +64,7 @@ class LightStripService:
             leds.append(pattern.color)
         return leds
 
-    def set_pattern(self, colors: list[ColorPattern]):
+    def set_pattern(self, colors: list[ColorPatternStep]):
         pattern = self.create_pattern(colors)
         for index, (r, g, b) in enumerate(pattern):
             self.set_led(r, g, b, index)
@@ -113,13 +115,13 @@ class LightStripService:
                     )
         self.cancel_event = None
 
-    def play_sequence_animation(self, colors: list[ColorPattern], duration: float):
+    def play_sequence_animation(self, colors: list[ColorPatternStep], duration: float):
         self.set_pattern(colors)
         time.sleep(duration)
 
     def play_fade_animation(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: float,
         start: float,
         end: float,
@@ -151,7 +153,7 @@ class LightStripService:
 
     def play_linear_sweep_animation(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: float,
         start: int,
         end: int,
@@ -176,7 +178,7 @@ class LightStripService:
 
     def play_binary_sweep_animation(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: float,
         start: int,
         end: int,
@@ -209,7 +211,7 @@ class LightStripService:
 
     def play_snake_animation(
         self,
-        colors: list[ColorPattern],
+        colors: list[ColorPatternStep],
         duration: float,
         start: int,
         end: int,
