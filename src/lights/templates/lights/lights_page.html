@@ -8,13 +8,18 @@
 
 {% block style %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/nav.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/finance/lights_page.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/lights/lights_page.css' %}">
 {% endblock %}
 
 {% block body %}
   {% include 'nav_bar.html' with title='Lights' %}
-  <div>
-    <div></div>
-    <form></form>
+  <div class="lights-container">
+    <div class="lights-layout">
+      <div class="lights-form-container">
+        <form>
+          {% include 'lights/color_pattern_step_form.html' with index=0 %}
+        </form>
+      </div>
+    </div>
   </div>
 {% endblock %}

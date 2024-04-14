@@ -1,13 +1,37 @@
-<div>
-  <div style="background-color: {{ color }};"></div>
-  <div>
-    <input type="range" min="0" max="255", value="0">
+<div id="lights-pattern-step-{{ index }}" class="lights-pattern-step">
+  <div
+    id="lights-color-{{ index }}"
+    class="lights-color"
+    style="background-color: black;"
+  ></div>
+  <div class="lights-color-input-container">
+    <input
+      class="lights-color-input"
+      name="color"
+      type="range"
+      min="0"
+      max="255"
+      value="0"
+      oninput="setCssById('lights-color-{{ index }}', { 'background-color': colorFromHue(+event.target.value) })"
+    >
   </div>
+  {% if index > 0 %}
+    <div class="lights-remove-button-container">
+      <button
+        class="lights-remove-button"
+        onclick="deleteElementById('lights-pattern-step-{{ index }}')"
+      >
+        X
+      </button>
+    </div>
+  {% endif %}
 </div>
-<div
-  id="lights-pattern-add-step"
-  hx-get="{% url 'lights:api-lights-pattern-add' %}"
-  hx-swap="outerHTML"
->
-  Add Color
+<div id="lights-pattern-add-step" class="lights-pattern-add-step">
+  <button
+    hx-get="{% url 'lights:api-lights-pattern-add'%}?index={{ index }}"
+    hx-target="#lights-pattern-add-step"
+    hx-swap="outerHTML"
+  >
+    Add Color
+  </button>
 </div>

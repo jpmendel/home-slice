@@ -9,11 +9,6 @@ urlpatterns = [
         name="api-lights-pattern-add",
     ),
     path(
-        "api/lights/pattern/remove",
-        views.remove_light_pattern_step,
-        name="api-lights-pattern-remove",
-    ),
-    path(
         "api/lights/pattern/set",
         views.set_light_pattern,
         name="api-lights-pattern-set",

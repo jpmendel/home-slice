@@ -1,6 +1,5 @@
 from typing import Optional, Tuple
 from django.db import models
-from django.contrib.auth.models import User
 
 
 class ColorPatternStep:
@@ -90,31 +89,3 @@ class SnakeColorAnimation(ColorAnimation):
         self.start = start
         self.end = end
         self.length = length
-
-
-class InProgressColorPattern(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    index = models.IntegerField()
-    pattern = models.JSONField()
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["username", "index"], name="unique_username_index"
-            )
-        ]
-
-
-class InProgressColorAnimation(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    index = models.IntegerField()
-    animation = models.JSONField()
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["username", "index"], name="unique_username_index"
-            )
-        ]

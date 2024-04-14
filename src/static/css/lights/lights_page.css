@@ -1,0 +1,66 @@
+.lights-container {
+  padding: 12px;
+}
+
+.lights-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 599px) {
+  .lights-form-container {
+    width: 100%;
+  }
+}
+
+@media (min-width: 600px) {
+  .lights-form-container {
+    width: 400px;
+  }
+}
+
+.lights-pattern-step {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.lights-color {
+  flex: 0 0 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 99px;
+  margin-right: 6px;
+}
+
+.lights-color-input-container {
+  flex: 1 0 0;
+  padding-top: 4px;
+  padding-right: 4px;
+}
+
+.lights-color-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lights-remove-button-container {
+  flex: 0 0 1;
+  margin-left: 6px;
+}
+
+.lights-remove-button {
+  background-color: gray;
+  color: white;
+  font-size: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 99px;
+}
+
+.lights-pattern-add-step {
+  display: flex;
+  justify-content: center;
+}
