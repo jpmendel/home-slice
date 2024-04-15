@@ -1,15 +1,15 @@
-from typing import Optional
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
 from django.http import (
     HttpRequest,
     HttpResponse,
+    HttpResponseBadRequest,
     HttpResponseNotAllowed,
-    HttpResponseServerError,
 )
 from .apps import LightsConfig
 from .services.light_strip import LightStripService
+from .util import color_from_hue, pattern_from_colors
 
 
 def light_strip_service() -> LightStripService:
@@ -37,6 +37,16 @@ def add_light_pattern_step(request: HttpRequest) -> HttpResponse:
 def set_light_pattern(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
+    colors = request.POST.getlist("color[]")
+    if colors is None or len(colors) == 0:
+        return HttpResponseBadRequest("Missing info")
+    if len(colors) == 1:
+        hue = int(colors[0])
+        r, g, b = color_from_hue(hue)
+        light_strip_service().set_solid_color(r, g, b)
+    else:
+        pattern = pattern_from_colors(colors)
+        light_strip_service().set_pattern(pattern)
     return HttpResponse()
 
 
@@ -44,11 +54,8 @@ def set_light_pattern(request: HttpRequest) -> HttpResponse:
 def clear_lights(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
-    try:
-        light_strip_service().clear_color()
-        return HttpResponse()
-    except:
-        return HttpResponseServerError("An error occurred")
+    light_strip_service().clear_color()
+    return render(request, "lights/color_pattern_step_form.html", {"index": 0})
 
 
 @login_required

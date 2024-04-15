@@ -16,8 +16,36 @@
   <div class="lights-container">
     <div class="lights-layout">
       <div class="lights-form-container">
-        <form>
-          {% include 'lights/color_pattern_step_form.html' with index=0 %}
+        <form hx-post="{% url 'lights:api-lights-pattern-set' %}" hx-swap="none">
+          {% csrf_token %}
+          <div class="lights-main-controls-container">
+            <div class="lights-select-container">
+              <select class="lights-select">
+                <option selected>Color</option>
+                <option>Animation</option>
+              </select>
+            </div>
+            <div class="lights-submit-button-container">
+              <button
+                class="lights-submit-button button-primary"
+                type="submit"
+              >
+                Set
+              </button>
+              <button
+                class="lights-submit-button button-primary"
+                type="button"
+                hx-post="{% url 'lights:api-lights-clear' %}"
+                hx-target="#lights-pattern"
+                hx-swap="innerHTML"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+          <div id="lights-pattern">
+            {% include 'lights/color_pattern_step_form.html' with index=0 %}
+          </div>
         </form>
       </div>
     </div>
