@@ -50,11 +50,11 @@ def posts_api(request: HttpRequest, post_id: Optional[int] = None) -> HttpRespon
         return get_posts(request, post_id)
     if request.method == "POST":
         return create_post(request)
-    if request.method == "PUT":
+    if request.method == "PATCH":
         return update_post(request, post_id)
     if request.method == "DELETE":
         return delete_post(request, post_id)
-    return HttpResponseNotAllowed(["GET", "POST", "PUT", "DELETE"])
+    return HttpResponseNotAllowed(["GET", "POST", "PATCH", "DELETE"])
 
 
 def get_posts(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:

@@ -26,6 +26,30 @@ button {
   outline: none;
 }
 
+.inline-indicator {
+  display: none;
+}
+
+.htmx-request .inline-indicator {
+  display: inline;
+}
+
+.htmx-request.inline-indicator {
+  display: inline;
+}
+
+.block-indicator {
+  display: none;
+}
+
+.htmx-request .block-indicator {
+  display: block;
+}
+
+.htmx-request.block-indicator {
+  display: block;
+}
+
 .text-title {
   font-size: 32px;
   font-weight: bold;

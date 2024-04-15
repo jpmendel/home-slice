@@ -20,6 +20,8 @@
         hx-params="symbol"
         hx-target="#stocks-price-plot"
         hx-indicator="#stocks-loading-indicator"
+        hx-on::before-request="clearTextAndHideById('stocks-error')"
+        hx-on::response-error="setTextAndShowById('stocks-error', event.detail.xhr.responseText)"
       >
         <div class="stocks-symbol-input-container">
           <input
@@ -36,9 +38,14 @@
         </div>
       </form>
       <div class="stocks-price-plot-container">
-        <div id="stocks-loading-indicator" class="htmx-indicator text-subtitle">
+        <div id="stocks-loading-indicator" class="block-indicator text-subtitle">
           Loading...
         </div>
+        <div
+          id="stocks-error"
+          class="stocks-error text-body"
+          style="display: none;"
+        ></div>
         <div id="stocks-price-plot"></div>
       </div>
     </div>

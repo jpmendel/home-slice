@@ -14,7 +14,13 @@
   <div class="login-outer">
     <div class="login-inner">
       <h1 class="login-title text-title">Welcome!</h1>
-      <form hx-post="{% url 'accounts:api-login' %}" hx-swap="none">
+      <form
+        hx-post="{% url 'accounts:api-login' %}"
+        hx-swap="none"
+        hx-indicator="#login-loading"
+        hx-on::before-request="clearTextAndHideById('login-error')"
+        hx-on::response-error="setTextAndShowById('login-error', event.detail.xhr.responseText)"
+      >
         {% csrf_token %}
         <div>
           <div class="login-label text-caption">
@@ -56,8 +62,16 @@
           >
         {% endif %}
         <div class="login-button-container">
-          <button class="login-button button-primary" type="submit">Log In</button>
+          <button class="login-button button-primary" type="submit">
+            Log In
+            <span id="login-loading" class="inline-indicator">...</span>
+          </button>
         </div>
+        <div
+          id="login-error"
+          class="login-error text-body"
+          style="display: none;"
+        ></div>
       </form>
     </div>
   </div>

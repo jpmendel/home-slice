@@ -21,7 +21,7 @@
           <button
             class="post-button button-primary text-body"
             type="button"
-            hx-put="{% url 'posts:api-posts-one' post_id=post.id %}"
+            hx-patch="{% url 'posts:api-posts-one' post_id=post.id %}"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
             hx-include="#content-textarea"
             hx-target="#edit-post-form-{{ post.id }}"

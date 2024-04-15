@@ -10,6 +10,18 @@ function setCssById(id, style) {
   }
 }
 
+function setTextAndShowById(id, text) {
+  const element = document.getElementById(id);
+  element.innerText = text;
+  element.style.display = 'block';
+}
+
+function clearTextAndHideById(id) {
+  const element = document.getElementById(id);
+  element.innerText = '';
+  element.style.display = 'none';
+}
+
 function colorFromHue(hue) {
   if (hue === 0) {
     return 'rgb(0, 0, 0)';
