@@ -1,6 +1,10 @@
 <nav class="nav-bar">
   <div class="nav-bar-left nav-bar-text">
-    <button class="nav-bar-menu-button" type="button">
+    <button
+      class="nav-bar-menu-button" 
+      type="button"
+      hx-on:click="setCssById('nav-menu', { display: 'block' })"
+    >
       {% include 'icons/menu.svg' %}
     </button>
   </div>

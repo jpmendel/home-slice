@@ -21,7 +21,7 @@
             hx-delete="{% url 'posts:api-posts-one' post_id=post.id %}"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
             hx-target="#post-content-{{ post.id }}"
-            hx-swap="outerHTML"
+            hx-swap="delete"
           >
             {% include 'icons/delete.svg' %}
           </button>

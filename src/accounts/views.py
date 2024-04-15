@@ -27,7 +27,7 @@ def login_page(request: HttpRequest) -> HttpResponse:
 def settings_page(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
-    return render(request, "accounts/settings_page.html")
+    return render(request, "accounts/settings_page.html", {"title": "Settings"})
 
 
 def login_action(request: HttpRequest) -> HttpResponse:

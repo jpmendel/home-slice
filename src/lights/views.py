@@ -22,7 +22,7 @@ def light_strip_service() -> LightStripService:
 def lights_page(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
-    return render(request, "lights/lights_page.html")
+    return render(request, "lights/lights_page.html", {"title": "Lights"})
 
 
 @login_required

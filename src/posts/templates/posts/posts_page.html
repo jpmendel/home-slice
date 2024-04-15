@@ -1,4 +1,4 @@
-{% extends 'base_page.html' %}
+{% extends 'nav_page.html' %}
 
 {% load static %}
 
@@ -12,7 +12,6 @@
 {% endblock %}
 
 {% block body %}
-  {% include 'nav_bar.html' with title='Posts' %}
   <div class="post-list-container">
     <div
       class="post-list-layout"
@@ -22,11 +21,9 @@
   </div>
   <div class="post-create-button-container">
     <button
-      class="post-create-button"
+      class="button-fab"
       type="button"
-      hx-get="{% url 'posts:api-posts-create-start' %}"
-      hx-target="#create-post-form"
-      hx-swap="outerHTML"
+      hx-on:click="setCssById('create-post-form', { display: 'block' })"
     >
       {% include 'icons/plus.svg' %}
     </button>

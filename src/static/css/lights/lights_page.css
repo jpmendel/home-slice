@@ -8,13 +8,13 @@
   align-items: center;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 399px) {
   .lights-form-container {
     width: 100%;
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 400px) {
   .lights-form-container {
     width: 400px;
   }
@@ -90,14 +90,4 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-}
-
-.lights-add-step-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background-color: cornflowerblue;
 }

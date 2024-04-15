@@ -33,16 +33,6 @@
   right: 20px;
 }
 
-.post-create-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background-color: cornflowerblue;
-}
-
 .post-header {
   display: flex;
   margin-bottom: 8px;

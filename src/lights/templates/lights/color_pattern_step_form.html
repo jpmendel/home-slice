@@ -12,14 +12,14 @@
       min="0"
       max="255"
       value="0"
-      oninput="setCssById('lights-color-{{ index }}', { 'background-color': colorFromHue(+event.target.value) })"
+      hx-on:input="setCssById('lights-color-{{ index }}', { 'background-color': colorFromHue(+event.target.value) })"
     >
   </div>
   {% if index > 0 %}
     <div class="lights-remove-button-container">
       <button
         class="lights-remove-button"
-        onclick="deleteElementById('lights-pattern-step-{{ index }}')"
+        hx-on:click="deleteElementById('lights-pattern-step-{{ index }}')"
       >
         X
       </button>
@@ -28,7 +28,7 @@
 </div>
 <div id="lights-add-step" class="lights-add-step-button-container">
   <button
-    class="lights-add-step-button button-primary"
+    class="button-fab"
     type="button"
     hx-get="{% url 'lights:api-lights-pattern-add'%}?index={{ index }}"
     hx-target="#lights-add-step"

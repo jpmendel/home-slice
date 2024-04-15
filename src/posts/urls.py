@@ -6,16 +6,6 @@ urlpatterns = [
     path("api/posts", views.posts_api, name="api-posts"),
     path("api/posts/<int:post_id>", views.posts_api, name="api-posts-one"),
     path(
-        "api/posts/create/start",
-        views.start_create_post,
-        name="api-posts-create-start",
-    ),
-    path(
-        "api/posts/create/cancel",
-        views.cancel_create_post,
-        name="api-posts-create-cancel",
-    ),
-    path(
         "api/posts/<int:post_id>/edit/start",
         views.start_edit_post,
         name="api-posts-edit-start",

@@ -17,21 +17,7 @@ from .models import Post
 def posts_page(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
-    return render(request, "posts/posts_page.html")
-
-
-@login_required
-def start_create_post(request: HttpRequest) -> HttpResponse:
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-    return render(request, "posts/create_post_form.html")
-
-
-@login_required
-def cancel_create_post(request: HttpRequest) -> HttpResponse:
-    if request.method != "GET":
-        return HttpResponseNotAllowed(["GET"])
-    return render(request, "posts/empty_create_post_form.html")
+    return render(request, "posts/posts_page.html", {"title": "Posts"})
 
 
 @login_required
@@ -90,7 +76,7 @@ def create_post(request: HttpRequest) -> HttpResponse:
 
     user = request.user
     post = Post.objects.create(author=user, content=content)
-    return render(request, "posts/new_created_post.html", {"post": post})
+    return render(request, "posts/post_content.html", {"post": post})
 
 
 def update_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
