@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.apps import apps
@@ -36,7 +37,8 @@ def stocks_api(request: HttpRequest) -> HttpResponse:
         return HttpResponseBadRequest("Must provide stock symbol")
     symbol = symbol.upper()
 
-    today = datetime.today()
+    tz = ZoneInfo("America/New_York")
+    today = datetime.now(tz)
     last_30_days = today - timedelta(days=30)
     try:
         image_data = stock_price_service().create_price_plot(

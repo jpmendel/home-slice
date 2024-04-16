@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from typing import Optional
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -89,7 +90,7 @@ def update_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResp
         post = Post.objects.get(id=post_id)
         if content is not None and content != post.content:
             post.content = content
-            post.updated_at = datetime.today()
+            post.updated_at = datetime.now(ZoneInfo("UTC"))
         post.save()
         return render(request, "posts/post_content.html", {"post": post})
     except:

@@ -24,7 +24,7 @@ class Post(models.Model):
         tz = ZoneInfo("America/New_York")
         zoned_datetime = self.created_at.astimezone(tz)
         zoned_date = zoned_datetime.date()
-        today = datetime.today().astimezone(tz).date()
+        today = datetime.now(tz).date()
         if zoned_date == today:
             return f"at {zoned_datetime.strftime('%-I:%M %p')}"
         if zoned_date.year == today.year:
