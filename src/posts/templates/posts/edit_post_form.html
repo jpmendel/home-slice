@@ -8,7 +8,7 @@
     <div>
       <div class="create-post-textarea-container">
         <textarea
-          id="content-textarea"
+          id="content-textarea-{{ post.id }}"
           class="create-post-textarea text-body"
           name="content"
           type="text"
@@ -23,7 +23,7 @@
             type="button"
             hx-patch="{% url 'posts:api-posts-one' post_id=post.id %}"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-            hx-include="#content-textarea"
+            hx-include="#content-textarea-{{ post.id }}"
             hx-target="#edit-post-form-{{ post.id }}"
             hx-swap="outerHTML"
           >
