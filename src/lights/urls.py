@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path("lights", views.lights_page, name="page-lights"),
+    path("api/lights", views.lights_api, name="api-lights"),
     path(
         "api/lights/pattern/add",
         views.add_light_pattern_step,

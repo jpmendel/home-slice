@@ -2,7 +2,7 @@ import time
 from abc import abstractmethod
 from concurrent.futures import ThreadPoolExecutor, Future
 from threading import Event as ThreadingEvent
-from typing import Optional, Tuple
+from typing import Optional
 from ..models import (
     ColorPatternStep,
     ColorAnimation,
@@ -33,6 +33,10 @@ class LightStripService:
         pass
 
     @abstractmethod
+    def get_leds(self) -> list[tuple[int, int, int]]:
+        pass
+
+    @abstractmethod
     def set_led(self, red: int, green: int, blue: int, index: int):
         pass
 
@@ -50,7 +54,7 @@ class LightStripService:
 
     def create_pattern(
         self, colors: list[ColorPatternStep]
-    ) -> list[Tuple[int, int, int]]:
+    ) -> list[tuple[int, int, int]]:
         leds = []
         color_index = 0
         color_step = 0

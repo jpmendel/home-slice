@@ -1,6 +1,26 @@
-function deleteElementById(id) {
+function deleteById(id) {
   const element = document.getElementById(id);
   element.parentElement.removeChild(element);
+}
+
+function updateById(id, { text, style, enabled }) {
+  const element = document.getElementById(id);
+  if (text != null) {
+    element.innerText = text;
+  }
+  if (style != null) {
+    for (const [key, value] of Object.entries(style)) {
+      element.style[key] = value;
+    }
+  }
+  if (enabled != null) {
+    element.disabled = !enabled;
+  }
+}
+
+function setTextById(id, text) {
+  const element = document.getElementById(id);
+  element.innerText = text;
 }
 
 function setCssById(id, style) {
@@ -10,16 +30,9 @@ function setCssById(id, style) {
   }
 }
 
-function setTextAndShowById(id, text) {
+function setEnabledById(id, isEnabled) {
   const element = document.getElementById(id);
-  element.innerText = text;
-  element.style.display = 'block';
-}
-
-function clearTextAndHideById(id) {
-  const element = document.getElementById(id);
-  element.innerText = '';
-  element.style.display = 'none';
+  element.disabled = !isEnabled;
 }
 
 function colorFromHue(hue) {

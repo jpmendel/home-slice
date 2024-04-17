@@ -1,0 +1,8 @@
+<div id="lights-display" class="lights-display">
+  {% for light in lights %}
+    <div
+      class="lights-light"
+      style="background-color: rgb({{ light.0 }}, {{ light.1 }}, {{ light.2 }});"
+    ></div>
+  {% endfor %}
+</div>

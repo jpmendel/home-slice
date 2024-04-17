@@ -15,35 +15,50 @@
   <div class="stocks-container">
     <div>
       <form
-        class="stocks-symbol-entry-container"
         hx-get="{% url 'finance:api-stocks' %}"
         hx-params="symbol"
         hx-target="#stocks-price-plot"
-        hx-indicator="#stocks-loading-indicator"
-        hx-on::before-request="clearTextAndHideById('stocks-error')"
-        hx-on::response-error="setTextAndShowById('stocks-error', event.detail.xhr.responseText)"
+        hx-on::before-request="
+          updateById('stocks-error', { text: '', style: { display: 'none' } });
+          setEnabledById('stocks-button', false);
+        "
+        hx-on::after-request="setEnabledById('stocks-button', true);"
+        hx-on::response-error="
+          updateById('stocks-error', {
+            text: event.detail.xhr.responseText,
+            style: { display: 'block' },
+          });
+        "
       >
-        <div class="stocks-symbol-input-container">
-          <input
-            class="stocks-symbol-input text-body"
-            name="symbol"
-            type="text"
-            placeholder="Ticker"
-          >
+        <div class="stocks-symbol-entry-container">
+          <div class="stocks-symbol-input-container">
+            <input
+              class="text-body stocks-symbol-input"
+              name="symbol"
+              type="text"
+              placeholder="Ticker"
+            >
+          </div>
+          <div>
+            <button
+              id="stocks-button"
+              class="button-primary submit-button"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
         </div>
-        <div>
-          <button class="button-primary" type="submit">
-            Submit
-          </button>
+        <div class="stocks-loading-indicator-container">
+          <div class="block-indicator text-subtitle">
+            Loading...
+          </div>
         </div>
       </form>
       <div class="stocks-price-plot-container">
-        <div id="stocks-loading-indicator" class="block-indicator text-subtitle">
-          Loading...
-        </div>
         <div
           id="stocks-error"
-          class="stocks-error text-body"
+          class="text-body stocks-error"
           style="display: none;"
         ></div>
         <div id="stocks-price-plot"></div>

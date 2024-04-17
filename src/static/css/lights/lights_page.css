@@ -20,6 +20,22 @@
   }
 }
 
+.lights-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.lights-light {
+  width: 10px;
+  height: 10px;
+  border: solid black 1px;
+  border-radius: 99px;
+}
+
 .lights-main-controls-container {
   display: flex;
   justify-content: center;
@@ -43,6 +59,7 @@
 
 .lights-submit-button {
   width: 80px;
+  padding: 8px 16px;
 }
 
 .lights-pattern-step {

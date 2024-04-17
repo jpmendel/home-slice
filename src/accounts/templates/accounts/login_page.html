@@ -13,13 +13,21 @@
 {% block body %}
   <div class="login-outer">
     <div class="login-inner">
-      <h1 class="login-title text-title">Welcome!</h1>
+      <h1 class="text-title login-title">Welcome!</h1>
       <form
         hx-post="{% url 'accounts:api-login' %}"
         hx-swap="none"
-        hx-indicator="#login-loading"
-        hx-on::before-request="clearTextAndHideById('login-error')"
-        hx-on::response-error="setTextAndShowById('login-error', event.detail.xhr.responseText)"
+        hx-on::before-request="
+          updateById('login-error', { text: '', style: { display: 'none' } });
+          updateById('login-button', { text: 'Loading...', enabled: false });
+        "
+        hx-on::after-request="updateById('login-button', { text: 'Log In', enabled: true });"
+        hx-on::response-error="
+          updateById('login-error', {
+            text: event.detail.xhr.responseText,
+            style: { display: 'block' },
+          });
+        "
       >
         {% csrf_token %}
         <div>
@@ -29,7 +37,7 @@
           <div class="login-input-container">
             <input
               id="username-input"
-              class="login-input text-body"
+              class="text-body login-input"
               name="username"
               type="text"
               placeholder="Username"
@@ -45,7 +53,7 @@
           <div class="login-input-container">
             <input
               id="password-input"
-              class="login-input text-body"
+              class="text-body login-input"
               name="password"
               type="password"
               placeholder="Password"
@@ -62,14 +70,17 @@
           >
         {% endif %}
         <div class="login-button-container">
-          <button class="login-button button-primary" type="submit">
+          <button
+            id="login-button"
+            class="button-primary submit-button login-button"
+            type="submit"
+          >
             Log In
-            <span id="login-loading" class="inline-indicator">...</span>
           </button>
         </div>
         <div
           id="login-error"
-          class="login-error text-body"
+          class="text-body login-error"
           style="display: none;"
         ></div>
       </form>

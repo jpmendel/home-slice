@@ -1,11 +1,11 @@
-from typing import Optional, Tuple
+from typing import Optional
 from .light_strip import LightStripService
 
 
 # Use this version of the class if you are running on something other than
 # a Raspberry Pi connected to a physical light strip.
 class LocalLightStripService(LightStripService):
-    leds: list[Tuple[int, int, int]]
+    leds: list[tuple[int, int, int]]
     output_file: Optional[str]
     is_started: bool
 
@@ -18,12 +18,20 @@ class LocalLightStripService(LightStripService):
     def setup(self):
         if self.output_file is not None:
             with open(self.output_file, "w", encoding="utf-8") as output_file:
-                led_color_strings = ["(0, 0, 0)\n"] * self.led_count()
+                led_color_strings = ["0,0,0\n"] * self.led_count()
                 output_file.writelines(led_color_strings)
         self.is_started = True
 
     def led_count(self) -> int:
         return len(self.leds)
+
+    def get_leds(self) -> list[tuple[int, int, int]]:
+        leds = []
+        if self.output_file is not None:
+            with open(self.output_file, "r", encoding="utf-8") as output_file:
+                lines = [line.rstrip().split(",") for line in output_file]
+                leds = [(int(line[0]), int(line[1]), int(line[2])) for line in lines]
+        return leds
 
     def set_led(self, red: int, green: int, blue: int, index: int):
         if not self.is_started:
@@ -35,5 +43,5 @@ class LocalLightStripService(LightStripService):
         if not self.is_started or self.output_file is None:
             return
         with open(self.output_file, "w", encoding="utf-8") as output_file:
-            led_color_strings = [f"({r}, {g}, {b})\n" for (r, g, b) in self.leds]
+            led_color_strings = [f"{r},{g},{b}\n" for (r, g, b) in self.leds]
             output_file.writelines(led_color_strings)

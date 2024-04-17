@@ -50,6 +50,14 @@ button {
   display: block;
 }
 
+.htmx-request .submit-button {
+  background-color: gray
+}
+
+.htmx-request.submit-button {
+  background-color: gray
+}
+
 .text-title {
   font-size: 32px;
   font-weight: bold;

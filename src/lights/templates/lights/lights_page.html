@@ -13,9 +13,25 @@
 
 {% block body %}
   <div class="lights-container">
+    <div
+      hx-get="{% url 'lights:api-lights' %}"
+      hx-trigger="load, lights-update from:body"
+      hx-swap="innerHTML"
+    ></div>
     <div class="lights-layout">
       <div class="lights-form-container">
-        <form hx-post="{% url 'lights:api-lights-pattern-set' %}" hx-swap="none">
+        <form
+          hx-post="{% url 'lights:api-lights-pattern-set' %}"
+          hx-swap="none"
+          hx-on::before-request="
+            setEnabledById('lights-set-button', false);
+            setEnabledById('lights-clear-button', false);
+          "
+          hx-on::after-request="
+            setEnabledById('lights-set-button', true);
+            setEnabledById('lights-clear-button', true);
+          "
+        >
           {% csrf_token %}
           <div class="lights-main-controls-container">
             <div class="lights-select-container">
@@ -26,17 +42,27 @@
             </div>
             <div class="lights-submit-button-container">
               <button
-                class="lights-submit-button button-primary"
+                id="lights-set-button"
+                class="button-primary submit-button lights-submit-button"
                 type="submit"
               >
                 Set
               </button>
               <button
-                class="lights-submit-button button-primary"
+                id="lights-clear-button"
+                class="button-primary submit-button lights-submit-button"
                 type="button"
                 hx-post="{% url 'lights:api-lights-clear' %}"
                 hx-target="#lights-pattern"
                 hx-swap="innerHTML"
+                hx-on::before-request="
+                  setEnabledById('lights-set-button', false);
+                  setEnabledById('lights-clear-button', false);
+                "
+                hx-on::after-request="
+                  setEnabledById('lights-set-button', true);
+                  setEnabledById('lights-clear-button', true);
+                "
               >
                 Clear
               </button>

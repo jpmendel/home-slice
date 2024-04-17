@@ -38,6 +38,9 @@ class HardwareLightStripService(LightStripService):
     def led_count(self) -> int:
         return self.pixel_strip.numPixels()  # type: ignore
 
+    def get_leds(self) -> list[tuple[int, int, int]]:
+        return [(0, 0, 0) for _ in range(0, self.led_count())]
+
     def set_led(self, red: int, green: int, blue: int, index: int):
         color = Color(int(red), int(green), int(blue))  # type: ignore
         self.pixel_strip.setPixelColor(index, color)  # type: ignore

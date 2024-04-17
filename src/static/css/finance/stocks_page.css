@@ -28,6 +28,11 @@
   width: 100%;
 }
 
+.stocks-loading-indicator-container {
+  display: flex;
+  justify-content: center;
+}
+
 .stocks-error {
   color: red;
 }

@@ -26,6 +26,14 @@ def lights_page(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+def lights_api(request: HttpRequest) -> HttpResponse:
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+    lights = light_strip_service().get_leds()
+    return render(request, "lights/lights_display.html", {"lights": lights})
+
+
+@login_required
 def add_light_pattern_step(request: HttpRequest) -> HttpResponse:
     if request.method != "GET":
         return HttpResponseNotAllowed(["GET"])
@@ -37,6 +45,7 @@ def add_light_pattern_step(request: HttpRequest) -> HttpResponse:
 def set_light_pattern(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
+
     colors = request.POST.getlist("color[]")
     if colors is None or len(colors) == 0:
         return HttpResponseBadRequest("Missing info")
@@ -47,15 +56,22 @@ def set_light_pattern(request: HttpRequest) -> HttpResponse:
     else:
         pattern = pattern_from_colors(colors)
         light_strip_service().set_pattern(pattern)
-    return HttpResponse()
+
+    response = HttpResponse()
+    response["HX-Trigger"] = "lights-update"
+    return response
 
 
 @login_required
 def clear_lights(request: HttpRequest) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
+
     light_strip_service().clear_color()
-    return render(request, "lights/color_pattern_step_form.html", {"index": 0})
+
+    response = render(request, "lights/color_pattern_step_form.html", {"index": 0})
+    response["HX-Trigger"] = "lights-update"
+    return response
 
 
 @login_required

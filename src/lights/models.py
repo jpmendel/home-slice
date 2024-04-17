@@ -1,12 +1,12 @@
-from typing import Optional, Tuple
+from typing import Optional
 from django.db import models
 
 
 class ColorPatternStep:
-    color: Tuple[int, int, int]
+    color: tuple[int, int, int]
     step: int
 
-    def __init__(self, color: Tuple[int, int, int], step: int):
+    def __init__(self, color: tuple[int, int, int], step: int):
         self.color = color
         self.step = step
 

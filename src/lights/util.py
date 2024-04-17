@@ -1,8 +1,8 @@
-from typing import Optional, Tuple
+from typing import Optional
 from .models import ColorPatternStep
 
 
-def color_from_hue(hue: int) -> Tuple[int, int, int]:
+def color_from_hue(hue: int) -> tuple[int, int, int]:
     if hue == 0:
         return (0, 0, 0)
     if hue == 255:

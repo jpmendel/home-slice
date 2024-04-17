@@ -1,6 +1,6 @@
 <div id="create-post-form" class="post-outer" style="display: none">
   <div class="post-inner">
-    <h1 class="create-post-header text-body">New Post</h1>
+    <h1 class="text-body create-post-header">New Post</h1>
     <form
       hx-post="{% url 'posts:api-posts' %}"
       hx-target="#create-post-form"
@@ -11,7 +11,7 @@
       <div class="create-post-textarea-container">
         <textarea
           id="content-textarea"
-          class="create-post-textarea text-body"
+          class="text-body create-post-textarea"
           name="content"
           type="text"
           placeholder="Write post here..."
@@ -21,7 +21,7 @@
       <div class="post-button-row">
         <div class="post-left-button-container">
           <button
-            class="post-button button-primary text-body"
+            class="button-primary text-body post-button"
             type="submit"
           >
             Create
@@ -29,7 +29,7 @@
         </div>
         <div class="post-right-button-container">
           <button
-            class="post-button button-secondary text-body"
+            class="button-secondary text-body post-button"
             type="button"
             hx-on:click="setCssById('create-post-form', { display: 'none' })"
           >

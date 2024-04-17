@@ -1,7 +1,7 @@
 <div id="edit-post-form-{{ post.id }}" class="post-outer">
   <div class="post-inner">
     <div class="post-header">
-      <h1 class="post-title text-body">
+      <h1 class="text-body post-title">
         <b>{{ post.author_name }}</b> {{ post.created_at_string }}{% if post.is_edited %} <i class="post-edited">(edited)</i>{% endif %}
       </h1>
     </div>
@@ -9,7 +9,7 @@
       <div class="create-post-textarea-container">
         <textarea
           id="content-textarea-{{ post.id }}"
-          class="create-post-textarea text-body"
+          class="text-body create-post-textarea"
           name="content"
           type="text"
           placeholder="Write post..."
@@ -19,7 +19,7 @@
       <div class="post-button-row">
         <div class="post-left-button-container">
           <button
-            class="post-button button-primary text-body"
+            class="button-primary text-body post-button"
             type="button"
             hx-patch="{% url 'posts:api-posts-one' post_id=post.id %}"
             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -32,10 +32,11 @@
         </div>
         <div class="post-right-button-container">
           <button
-            class="post-button button-secondary text-body"
+            class="button-secondary text-body post-button"
             type="button"
             hx-get="{% url 'posts:api-posts-edit-cancel' post_id=post.id %}"
             hx-target="#edit-post-form-{{ post.id }}"
+            hx-swap="outerHTML"
           >
             Cancel
           </button>
