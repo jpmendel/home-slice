@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="post-list-container">
+  <main class="post-list-container">
     <div
       class="post-list-layout"
       hx-get="{% url 'posts:api-posts' %}"
@@ -27,5 +27,5 @@
     >
       {% include 'icons/plus.svg' %}
     </button>
-  </div>
+  </main>
 {% endblock %}

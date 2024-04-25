@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="lights-container">
+  <main class="lights-container">
     <div
       hx-get="{% url 'lights:api-lights' %}"
       hx-trigger="load, lights-update from:body"
@@ -74,5 +74,5 @@
         </form>
       </div>
     </div>
-  </div>
+  </main>
 {% endblock %}

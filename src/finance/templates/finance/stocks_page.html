@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block body %}
-  <div class="stocks-container">
+  <main class="stocks-container">
     <div>
       <form
         hx-get="{% url 'finance:api-stocks' %}"
@@ -64,5 +64,5 @@
         <div id="stocks-price-plot"></div>
       </div>
     </div>
-  </div>
+  </main>
 {% endblock %}
