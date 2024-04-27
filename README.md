@@ -8,6 +8,13 @@ A Raspberry Pi Zero home server application built using Python, Django, HTMX and
 2. Run the `setup.sh` script to create the virtual environment and install packages.
 3. Fill your desired configuration into the `.env` file.
 
+## Run (development)
+
+1. Activate the Python virtual environment: `source .venv/bin/activate`
+2. Change into the `src` directory: `cd src`
+3. If needed, migrate the database: `python manage.py migrate`
+4. Run the Django application in development mode: `python manage.py runserver`
+
 ## Raspberry Pi Setup
 
 1. Use the Raspberry Pi Imager to install Raspbian onto a device. Set up the device to connect to your network and create SSH keys to securely connect.
