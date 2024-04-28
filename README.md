@@ -4,7 +4,7 @@ A Raspberry Pi Zero home server application built using Python, Django, HTMX and
 
 ## Project Setup
 
-1. Install Python 3.9 with `brew install python@3.9` on MacOS, or by visiting [python.org](https://www.python.org/downloads/).
+1. Install Python 3.9 with your system package manager, or by visiting [python.org](https://www.python.org/downloads/).
 2. Run the `setup.sh` script to create the virtual environment and install packages.
 3. Fill your desired configuration into the `.env` file.
 
