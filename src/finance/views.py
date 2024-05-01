@@ -46,8 +46,7 @@ def stocks_api(request: HttpRequest) -> HttpResponse:
             last_30_days,
             today,
         )
-        return render(
-            request, "finance/stock_price_plot.html", {"image_data": image_data}
-        )
     except:
         return HttpResponseServerError("Failed to load stock prices")
+
+    return render(request, "finance/stock_price_plot.html", {"image_data": image_data})

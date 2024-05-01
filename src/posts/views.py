@@ -28,9 +28,9 @@ def start_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpRespons
 
     try:
         post = Post.objects.get(id=post_id)
-        return render(request, "posts/edit_post_form.html", {"post": post})
     except:
         return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
+    return render(request, "posts/edit_post_form.html", {"post": post})
 
 
 @login_required
@@ -40,9 +40,9 @@ def cancel_edit_post(request: HttpRequest, post_id: Optional[int]) -> HttpRespon
 
     try:
         post = Post.objects.get(id=post_id)
-        return render(request, "posts/post_content.html", {"post": post})
     except:
         return HttpResponseNotFound(f'Post with ID "{post_id}" not found')
+    return render(request, "posts/post_content.html", {"post": post})
 
 
 @login_required
@@ -62,9 +62,9 @@ def get_posts(request: HttpRequest, post_id: Optional[int] = None) -> HttpRespon
     if post_id is not None:
         try:
             post = Post.objects.get(id=post_id)
-            return render(request, "posts/post_content.html", {"post": post})
         except:
             return HttpResponseNotFound(f'Post with id "{post_id}" not found')
+        return render(request, "posts/post_content.html", {"post": post})
 
     posts = Post.objects.all().order_by("-created_at")
     return render(request, "posts/posts_list.html", {"posts": posts})
@@ -84,17 +84,17 @@ def update_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResp
     if post_id is None:
         return HttpResponseBadRequest("Post ID is required to update")
 
+    body = QueryDict(request.body)
+    content = body.get("content")
     try:
-        body = QueryDict(request.body)
-        content = body.get("content")
         post = Post.objects.get(id=post_id)
-        if content is not None and content != post.content:
-            post.content = content
-            post.updated_at = datetime.now(ZoneInfo("UTC"))
-        post.save()
-        return render(request, "posts/post_content.html", {"post": post})
     except:
         return HttpResponseNotFound(f'User with username "{post_id}" not found')
+    if content is not None and content != post.content:
+        post.content = content
+        post.updated_at = datetime.now(ZoneInfo("UTC"))
+    post.save()
+    return render(request, "posts/post_content.html", {"post": post})
 
 
 def delete_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResponse:
@@ -103,7 +103,7 @@ def delete_post(request: HttpRequest, post_id: Optional[int] = None) -> HttpResp
 
     try:
         post = Post.objects.get(id=post_id)
-        post.delete()
-        return HttpResponse()
     except:
         return HttpResponseNotFound(f'User with username "{post_id}" not found')
+    post.delete()
+    return HttpResponse()

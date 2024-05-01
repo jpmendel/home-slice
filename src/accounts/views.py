@@ -98,11 +98,11 @@ def create_user(request: HttpRequest) -> HttpResponse:
                 username=username,
                 password=password,
             )
-        return HttpResponse()
     except IntegrityError:
         return HttpResponseBadRequest(f'User with name "{username}" already exists')
     except:
         return HttpResponseServerError("An unknown error occurred")
+    return HttpResponse()
 
 
 def delete_user(request: HttpRequest, username: Optional[str]) -> HttpResponse:
@@ -111,7 +111,7 @@ def delete_user(request: HttpRequest, username: Optional[str]) -> HttpResponse:
 
     try:
         user = User.objects.get(username=username)
-        user.delete()
-        return HttpResponse()
     except:
         return HttpResponseNotFound(f'User with username "{username}" not found')
+    user.delete()
+    return HttpResponse()
