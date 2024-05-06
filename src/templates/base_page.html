@@ -3,27 +3,30 @@
 {% load static %}
 
 <html lang="en">
-  <head>
-    <title>
-      {% block title %}
-      {% endblock %}
-    </title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    {% block style %}
+
+<head>
+  <title>
+    {% block title %}
     {% endblock %}
-    <script type="text/javascript" src="{% static 'js/htmx.js' %}" defer></script>
-    <script type="text/javascript" src="{% static 'js/base.js' %}" defer></script>
-    {% block script %}
-    {% endblock %}
-  </head>
-  <body>
-    {% block nav_bar %}
-    {% endblock %}
-    {% block body %}
-    {% endblock %}
-    {% block nav_menu %}
-    {% endblock %}
-  </body>
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+  {% block style %}
+  {% endblock %}
+  <script type="text/javascript" src="{% static 'js/htmx.js' %}" defer></script>
+  <script type="text/javascript" src="{% static 'js/base.js' %}" defer></script>
+  {% block script %}
+  {% endblock %}
+</head>
+
+<body>
+  {% block nav_bar %}
+  {% endblock %}
+  {% block body %}
+  {% endblock %}
+  {% block nav_menu %}
+  {% endblock %}
+</body>
+
 </html>
